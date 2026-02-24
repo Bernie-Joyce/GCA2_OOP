@@ -1,3 +1,7 @@
+CREATE DATABASE CatnOwner;
+USE CatnOwner;
+
+
 CREATE TABLE `owners` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(30) NOT NULL,
@@ -7,7 +11,7 @@ CREATE TABLE `owners` (
   `Phone` varchar(12) NOT NULL,
   `Email` varchar(30) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB
+) ENGINE=InnoDB;
 
 CREATE TABLE `cats` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
