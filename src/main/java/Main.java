@@ -8,7 +8,9 @@ void main() throws Exception {
     CatService service = new CatService(dao);
 
 
-    System.out.println("All cats:");
+    IO.println("All cats:");
     for (Cat cat : service.list())
-        System.out.println(" - " + cat);
+        IO.println(" - " + cat);
+
+
 }

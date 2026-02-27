@@ -23,5 +23,9 @@ public class CatService {
     public List<Cat> list() throws Exception {
         return _dao.findAll();
     }
+
+    public void deleteCat(int id) throws Exception {
+        _dao.deleteById(id);
+    }
 }
 
