@@ -1,10 +1,11 @@
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.*;
 
 public class CatService {
 
-    private CatDao _dao;
+    private final CatDao _dao;
 
     public CatService(CatDao dao) {
         if (dao == null)
@@ -25,7 +26,21 @@ public class CatService {
     }
 
     public void deleteCat(int id) throws Exception {
-        _dao.deleteById(id);
+        if (_dao.deleteById(id)) {
+            IO.println("Cat deleted successfully");
+        } else {
+            IO.println("Cat was not deleted");
+        }
+    }
+
+    public List<Cat> filterAllMales() throws Exception {
+        Predicate<Cat> keep = cat -> cat.getGender().equals("Male");
+        return _dao.filter(_dao.findAll(), keep);
+    }
+
+    public List<Cat> filterAllFemale() throws Exception {
+        Predicate<Cat> keep = cat -> cat.getGender().equals("Female");
+        return _dao.filter(_dao.findAll(), keep);
     }
 }
 

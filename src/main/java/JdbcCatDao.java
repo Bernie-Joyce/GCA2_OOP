@@ -2,11 +2,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class JdbcCatDao implements CatDao {
-    private String _url;
-    private String _user;
-    private String _pass;
+    private final String _url;
+    private final String _user;
+    private final String _pass;
 
     public JdbcCatDao(String url, String user, String pass) {
         if (url == null || url.isBlank())
@@ -116,6 +117,15 @@ public class JdbcCatDao implements CatDao {
             return ps.executeUpdate() == 1;
         }
     }
+    @Override
+    public List<Cat> filter(List<Cat> cats, Predicate<Cat> keep) {
+        List<Cat> result = new ArrayList<>();
+        for (Cat cat: cats)
+            if (keep.test(cat))
+                result.add(cat);
+        return result;
+    }
+
 
     private static Cat mapRow(ResultSet rs) throws SQLException {
         int Id = rs.getInt("id");
