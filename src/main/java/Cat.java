@@ -4,7 +4,7 @@ public class Cat {
     private int Id;
     private int OwnerId;
     private String Name;
-    private String Gender;
+    private Gender Gender;
     private String Breed;
     private Date DateOfBirth;
     private String Colour;
@@ -23,7 +23,7 @@ public class Cat {
         return Name;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return Gender;
     }
 
@@ -44,7 +44,7 @@ public class Cat {
     }
 
 
-    public Cat(int Id, int OwnerId, String Name, String Gender, String Breed, Date DateOfBirth, String Colour, String IdentifyingMarkings) {
+    public Cat(int Id, int OwnerId, String Name, Gender Gender, String Breed, Date DateOfBirth, String Colour, String IdentifyingMarkings) {
         if (Id < 0) {
             throw new IllegalArgumentException("id cant be below 0");
         }
@@ -54,7 +54,7 @@ public class Cat {
         if (Name == null || Name.isBlank()) {
             throw new IllegalArgumentException("Name is required");
         }
-        if (Gender == null || Gender.isBlank()) {
+        if (Gender == null) {
             throw new IllegalArgumentException("Gender is required");
         }
         if (Breed == null || Breed.isBlank()) {

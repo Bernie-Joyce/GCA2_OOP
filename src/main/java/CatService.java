@@ -33,13 +33,8 @@ public class CatService {
         }
     }
 
-    public List<Cat> filterAllMales() throws Exception {
-        Predicate<Cat> keep = cat -> cat.getGender().equals("Male");
-        return _dao.filter(_dao.findAll(), keep);
-    }
-
-    public List<Cat> filterAllFemale() throws Exception {
-        Predicate<Cat> keep = cat -> cat.getGender().equals("Female");
+    public List<Cat> filterGender(Gender gender) throws Exception {
+        Predicate<Cat> keep = cat -> cat.getGender().equals(gender);
         return _dao.filter(_dao.findAll(), keep);
     }
 }

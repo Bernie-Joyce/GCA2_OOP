@@ -7,7 +7,7 @@ void main() throws Exception {
     CatDao dao = new JdbcCatDao(url, user, pass);
     CatService service = new CatService(dao);
 
-    for(Cat cat : service.filterAllFemale()){
+    for(Cat cat : service.filterGender(Gender.MALE)){
         IO.println(" - " + cat);
     }
 

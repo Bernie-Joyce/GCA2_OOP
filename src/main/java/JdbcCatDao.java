@@ -131,13 +131,13 @@ public class JdbcCatDao implements CatDao {
         int Id = rs.getInt("id");
         int OwnerId = rs.getInt("OwnerId");
         String Name = rs.getString("Name");
-        String Gender = rs.getString("Gender");
+        Gender gender = Gender.valueOf(rs.getString("Gender").toUpperCase());
         String Breed = rs.getString("Breed");
         Date DateOfBirth = rs.getDate("DateOfBirth");
         String Color = rs.getString("Color");
         String IdentifyingMarkings = rs.getString("IdentifyingMarkings");
 
-        return new Cat(Id, OwnerId, Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings);
+        return new Cat(Id, OwnerId, Name, gender, Breed, DateOfBirth, Color, IdentifyingMarkings);
     }
 }
 
