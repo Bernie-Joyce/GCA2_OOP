@@ -1,13 +1,18 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+
 public class JdbcCatDao implements CatDao {
     private final String _url;
     private final String _user;
     private final String _pass;
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     public JdbcCatDao(String url, String user, String pass) {
         if (url == null || url.isBlank())
@@ -17,27 +22,41 @@ public class JdbcCatDao implements CatDao {
         _user = user;
         _pass = pass;
     }
-
     private Connection open() throws SQLException {
         return DriverManager.getConnection(_url, _user, _pass);
     }
+    private static Cat mapRow(ResultSet rs) throws SQLException {
+        int Id = rs.getInt("id");
+        int OwnerId = rs.getInt("OwnerId");
+        String Name = rs.getString("Name");
+        Gender gender = Gender.valueOf(rs.getString("Gender").toUpperCase());
+        String Breed = rs.getString("Breed");
+        Date DateOfBirth = rs.getDate("DateOfBirth");
+        String Color = rs.getString("Color");
+        String IdentifyingMarkings = rs.getString("IdentifyingMarkings");
+
+        return new Cat(Id, OwnerId, Name, gender, Breed, DateOfBirth, Color, IdentifyingMarkings);
+    }
 
     @Override
-    public int insert(int OwnerId, String Name, String Gender, String Breed, Date DateOfBirth, String Color, String IdentifyingMarkings) throws Exception {
-        if (Name == null || Name.isBlank()) {
+    public int insert(int ownerId, String name, Gender gender, String breed, Date dateOfBirth, String color, String identifyingMarkings) throws Exception {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required");
         }
-        if (Gender == null || Gender.isBlank()) {
+        if (gender == null) {
             throw new IllegalArgumentException("Gender is required");
         }
-        if (Color == null || Color.isBlank()) {
+        if (color == null || color.isBlank()) {
             throw new IllegalArgumentException("Color is required");
         }
-        if (IdentifyingMarkings == null || IdentifyingMarkings.isBlank()) {
+        if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
             throw new IllegalArgumentException("Identifying Markings is required");
         }
-        if (OwnerId < 0) {
+        if (ownerId < 0) {
             throw new IllegalArgumentException("OwnerId is required");
+        }
+        if(dateOfBirth == null){
+            throw new IllegalArgumentException("Date of birth is required");
         }
 
         String sql = "INSERT INTO cats(OwnerId,Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings) VALUES (? , ? , ? , ? , ? , ? , ?)";
@@ -45,13 +64,13 @@ public class JdbcCatDao implements CatDao {
         try (Connection c = open();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, OwnerId);
-            ps.setString(2, Name.trim());
-            ps.setString(3, Gender.trim());
-            ps.setString(4, Breed.trim());
-            ps.setDate(5, DateOfBirth);
-            ps.setString(6, Color.trim());
-            ps.setString(7, IdentifyingMarkings);
+            ps.setInt(1, ownerId);
+            ps.setString(2, name.trim());
+            ps.setString(3, gender.name());
+            ps.setString(4, breed.trim());
+            ps.setDate(5, dateOfBirth);
+            ps.setString(6, color.trim());
+            ps.setString(7, identifyingMarkings.trim());
 
             int rows = ps.executeUpdate();
             if (rows != 1)
@@ -64,7 +83,6 @@ public class JdbcCatDao implements CatDao {
             }
         }
     }
-
     @Override
     public Optional<Cat> findById(int id) throws Exception {
         if (id <= 0)
@@ -85,7 +103,6 @@ public class JdbcCatDao implements CatDao {
             }
         }
     }
-
     @Override
     public List<Cat> findAll() throws Exception {
 
@@ -101,8 +118,6 @@ public class JdbcCatDao implements CatDao {
             return out;
         }
     }
-
-
     @Override
     public boolean deleteById(int id) throws Exception {
         if (id <= 0)
@@ -119,26 +134,22 @@ public class JdbcCatDao implements CatDao {
     }
     @Override
     public List<Cat> filter(List<Cat> cats, Predicate<Cat> keep) {
-        List<Cat> result = new ArrayList<>();
+        var result = new ArrayList<Cat>();
         for (Cat cat: cats)
             if (keep.test(cat))
                 result.add(cat);
         return result;
     }
-
-
-    private static Cat mapRow(ResultSet rs) throws SQLException {
-        int Id = rs.getInt("id");
-        int OwnerId = rs.getInt("OwnerId");
-        String Name = rs.getString("Name");
-        Gender gender = Gender.valueOf(rs.getString("Gender").toUpperCase());
-        String Breed = rs.getString("Breed");
-        Date DateOfBirth = rs.getDate("DateOfBirth");
-        String Color = rs.getString("Color");
-        String IdentifyingMarkings = rs.getString("IdentifyingMarkings");
-
-        return new Cat(Id, OwnerId, Name, gender, Breed, DateOfBirth, Color, IdentifyingMarkings);
+    @Override
+    public String serialise(Cat cat) throws JsonProcessingException {
+        return JSON_MAPPER.writeValueAsString(cat);
+    }
+    @Override
+    public Cat deSerialise(String json) throws JsonProcessingException {
+        return JSON_MAPPER.readValue(json, Cat.class);
+    }
+    @Override
+    public String serialiseList(List<Cat> catList) throws JsonProcessingException {
+        return JSON_MAPPER.writeValueAsString(catList);
     }
 }
-
-

@@ -1,41 +1,43 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.*;
 
 public class CatService {
-
-    private final CatDao _dao;
-
+    private final CatDao dao;
     public CatService(CatDao dao) {
         if (dao == null)
             throw new IllegalArgumentException("dao is null");
-        _dao = dao;
+        this.dao = dao;
     }
-
-    public int createCat(int OwnerId, String Name, String Gender, String Breed, Date DateOfBirth, String Color, String IdentifyingMarkings) throws Exception {
-        return _dao.insert(OwnerId, Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings);
+    public int createCat(int ownerId, String name, Gender gender, String breed, Date dateOfBirth, String color, String identifyingMarkings) throws Exception {
+        return dao.insert(ownerId, name, gender, breed, dateOfBirth, color, identifyingMarkings);
     }
-
-    public Optional<Cat> get(int id) throws Exception {
-        return _dao.findById(id);
+    public Optional<Cat> getCat(int id) throws Exception {
+        return dao.findById(id);
     }
-
-    public List<Cat> list() throws Exception {
-        return _dao.findAll();
+    public List<Cat> listCats() throws Exception {
+        return dao.findAll();
     }
-
     public void deleteCat(int id) throws Exception {
-        if (_dao.deleteById(id)) {
+        if (dao.deleteById(id)) {
             IO.println("Cat deleted successfully");
         } else {
             IO.println("Cat was not deleted");
         }
     }
-
     public List<Cat> filterGender(Gender gender) throws Exception {
-        Predicate<Cat> keep = cat -> cat.getGender().equals(gender);
-        return _dao.filter(_dao.findAll(), keep);
+        return dao.filter(dao.findAll(), cat -> cat.getGender().equals(gender));
+    }
+    public String catToJSON(Cat cat) throws JsonProcessingException {
+        return dao.serialise(cat);
+    }
+    public Cat catFromJSON(String json) throws JsonProcessingException {
+        return dao.deSerialise(json);
+    }
+    public String catListToJSON(List<Cat> catList) throws JsonProcessingException {
+        return dao.serialiseList(catList);
     }
 }
-

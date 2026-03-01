@@ -1,94 +1,106 @@
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Date;
 
 public class Cat {
-    private int Id;
-    private int OwnerId;
-    private String Name;
-    private Gender Gender;
-    private String Breed;
-    private Date DateOfBirth;
-    private String Colour;
-    private String IdentifyingMarkings;
+    private int id;
+    private int ownerId;
+    private String name;
+    private Gender gender;
+    private String breed;
+    private Date dateOfBirth;
+    private String colour;
+    private String identifyingMarkings;
 
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public int getOwnerId() {
-        return OwnerId;
+        return ownerId;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public Gender getGender() {
-        return Gender;
+        return gender;
     }
 
     public String getBreed() {
-        return Breed;
+        return breed;
     }
 
     public Date getDateOfBirth() {
-        return DateOfBirth;
+        return dateOfBirth;
     }
 
     public String getColour() {
-        return Colour;
+        return colour;
     }
 
     public String getIdentifyingMarkings() {
-        return IdentifyingMarkings;
+        return identifyingMarkings;
     }
 
 
-    public Cat(int Id, int OwnerId, String Name, Gender Gender, String Breed, Date DateOfBirth, String Colour, String IdentifyingMarkings) {
-        if (Id < 0) {
+    @JsonCreator
+    public Cat(@JsonProperty("id") int id,
+               @JsonProperty("ownerId") int ownerId,
+               @JsonProperty("name") String name,
+               @JsonProperty("gender") Gender gender,
+               @JsonProperty("breed") String breed,
+               @JsonProperty("dateOfBirth") Date dateOfBirth,
+               @JsonProperty("colour") String colour,
+               @JsonProperty("identifyingMarkings") String identifyingMarkings)
+    {
+        if (id < 0) {
             throw new IllegalArgumentException("id cant be below 0");
         }
-        if (OwnerId < 0) {
+        if (ownerId < 0) {
             throw new IllegalArgumentException("owner id cant be below 0");
         }
-        if (Name == null || Name.isBlank()) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name is required");
         }
-        if (Gender == null) {
+        if (gender == null) {
             throw new IllegalArgumentException("Gender is required");
         }
-        if (Breed == null || Breed.isBlank()) {
+        if (breed == null || breed.isBlank()) {
             throw new IllegalArgumentException("Breed is required");
         }
-        if (DateOfBirth == null) {
+        if (dateOfBirth == null) {
             throw new IllegalArgumentException("Date of Birth is required");
         }
-        if (Colour == null || Colour.isBlank()) {
+        if (colour == null || colour.isBlank()) {
             throw new IllegalArgumentException("Colour is required");
         }
-        if (IdentifyingMarkings == null || IdentifyingMarkings.isBlank()) {
-            throw new IllegalArgumentException("Colour is required");
+        if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
+            throw new IllegalArgumentException("Identifying markings is required");
         }
 
-        this.Id = Id;
-        this.OwnerId = OwnerId;
-        this.Name = Name;
-        this.Gender = Gender;
-        this.Breed = Breed;
-        this.DateOfBirth = DateOfBirth;
-        this.Colour = Colour;
-        this.IdentifyingMarkings = IdentifyingMarkings;
+        this.id = id;
+        this.ownerId = ownerId;
+        this.name = name;
+        this.gender = gender;
+        this.breed = breed;
+        this.dateOfBirth = dateOfBirth;
+        this.colour = colour;
+        this.identifyingMarkings = identifyingMarkings;
     }
 
     @Override
     public String toString() {
-        return "Cat{id=" + Id +
-                ", OwnerId=" + OwnerId +
-                ", Name=" + Name +
-                ", Gender=" + Gender +
-                ", Breed=" + Breed +
-                ", DateOfBirth=" + DateOfBirth +
-                ", Colour="+ Colour +
-                ", IdentifyingMarkings=" + IdentifyingMarkings;
+        return "Cat{id=" + id +
+                ", ownerId=" + ownerId +
+                ", name=" + name +
+                ", gender=" + gender +
+                ", breed=" + breed +
+                ", dateOfBirth=" + dateOfBirth +
+                ", colour=" + colour +
+                ", identifyingMarkings=" + identifyingMarkings;
     }
 }
