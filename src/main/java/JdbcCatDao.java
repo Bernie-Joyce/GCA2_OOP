@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.*;
@@ -22,9 +23,11 @@ public class JdbcCatDao implements CatDao {
         _user = user;
         _pass = pass;
     }
+
     private Connection open() throws SQLException {
         return DriverManager.getConnection(_url, _user, _pass);
     }
+
     private static Cat mapRow(ResultSet rs) throws SQLException {
         int Id = rs.getInt("id");
         int OwnerId = rs.getInt("OwnerId");
@@ -55,7 +58,7 @@ public class JdbcCatDao implements CatDao {
         if (ownerId < 0) {
             throw new IllegalArgumentException("OwnerId is required");
         }
-        if(dateOfBirth == null){
+        if (dateOfBirth == null) {
             throw new IllegalArgumentException("Date of birth is required");
         }
 
@@ -83,6 +86,7 @@ public class JdbcCatDao implements CatDao {
             }
         }
     }
+
     @Override
     public Optional<Cat> findById(int id) throws Exception {
         if (id <= 0)
@@ -103,6 +107,7 @@ public class JdbcCatDao implements CatDao {
             }
         }
     }
+
     @Override
     public List<Cat> findAll() throws Exception {
 
@@ -118,6 +123,7 @@ public class JdbcCatDao implements CatDao {
             return out;
         }
     }
+
     @Override
     public boolean deleteById(int id) throws Exception {
         if (id <= 0)
@@ -132,24 +138,34 @@ public class JdbcCatDao implements CatDao {
             return ps.executeUpdate() == 1;
         }
     }
+
     @Override
     public List<Cat> filter(List<Cat> cats, Predicate<Cat> keep) {
         var result = new ArrayList<Cat>();
-        for (Cat cat: cats)
+        for (Cat cat : cats)
             if (keep.test(cat))
                 result.add(cat);
         return result;
     }
+
     @Override
     public String serialise(Cat cat) throws JsonProcessingException {
-        return JSON_MAPPER.writeValueAsString(cat);
+        return JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(cat);
     }
+
     @Override
     public Cat deSerialise(String json) throws JsonProcessingException {
         return JSON_MAPPER.readValue(json, Cat.class);
     }
+
     @Override
     public String serialiseList(List<Cat> catList) throws JsonProcessingException {
-        return JSON_MAPPER.writeValueAsString(catList);
+        return JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(catList);
+    }
+
+    @Override
+    public List<Cat> deSerialiseList(String json) throws JsonProcessingException {
+        return JSON_MAPPER.readValue(json, new TypeReference<List<Cat>>() {
+        });
     }
 }

@@ -1,20 +1,5 @@
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-
 void main() throws Exception {
-
-    String url = "jdbc:mysql://localhost:8889/CatnOwner?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    String user = "root";
-    String pass = "root";
-
-    CatDao dao = new JdbcCatDao(url, user, pass);
-    CatService service = new CatService(dao);
-
-//    for(Cat cat : service.filterGender(Gender.MALE)){
-//        IO.println(" - " + cat);
-//    }
-
+    CatService service = getCatService();
 
     List<Cat> cats = service.listCats();
     Cat cat = cats.getFirst();
@@ -30,10 +15,22 @@ void main() throws Exception {
 
     IO.println(jsonList);
 
-//
-//    IO.println("All cats:");
-//    for (Cat cat : service.listCats())
-//        IO.println(" - " + cat);
-//
 
+}
+
+private static CatService getCatService() {
+    String OS = System.getProperty("os.name").toLowerCase();
+    String url;
+    if (OS.contains("mac")) {
+        url = "jdbc:mysql://localhost:8889/CatnOwner?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    } else if (OS.contains("win")) {
+        url = "jdbc:mysql://localhost:3306/CatnOwner?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    } else {
+        throw new RuntimeException("Unsupported OS");
+    }
+    String user = "root";
+    String pass = "root";
+
+    CatDao dao = new JdbcCatDao(url, user, pass);
+    return new CatService(dao);
 }

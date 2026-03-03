@@ -40,4 +40,7 @@ public class CatService {
     public String catListToJSON(List<Cat> catList) throws JsonProcessingException {
         return dao.serialiseList(catList);
     }
+    public List<Cat> JSONToCatList(String json) throws JsonProcessingException {
+        return dao.deSerialiseList(json);
+    }
 }
