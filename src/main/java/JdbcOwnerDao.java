@@ -1,0 +1,128 @@
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+public class JdbcOwnerDao implements OwnerDao{
+    private final String _url;
+    private final String _user;
+    private final String _pass;
+
+    public JdbcOwnerDao(String url, String user, String pass) {
+        if (url == null || url.isBlank())
+            throw new IllegalArgumentException("url is required");
+        _url = url.trim();
+        _user = user;
+        _pass = pass;
+    }
+
+    private Connection open() throws SQLException {
+        return DriverManager.getConnection(_url, _user, _pass);
+    }
+
+    private static Owner mapRow(ResultSet rs) throws SQLException {
+        return new Owner(rs.getInt("id"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getInt("Age"),
+                rs.getString("Address"),
+                rs.getString("Phone"),
+                rs.getString("Email"));
+    }
+
+    @Override
+    public Owner insert(Owner owner) throws Exception {
+        String sql = "INSERT INTO owners(FirstName, LastName, Age, Address, Phone, Email) VALUES (? , ? , ? , ? , ? , ?)";
+
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setString(1, owner.getFirstName());
+            ps.setString(2, owner.getLastName());
+            ps.setInt(3, owner.getAge());
+            ps.setString(4, owner.getAddress());
+            ps.setString(5, owner.getPhone());
+            ps.setString(6, owner.getEmail());
+
+            int rows = ps.executeUpdate();
+            if (rows != 1)
+                throw new IllegalArgumentException("insert failed, rows = " + rows);
+
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (!keys.next())
+                    throw new IllegalArgumentException("no generated keys returned");
+
+                return new Owner(keys.getInt(1),
+                        owner.getFirstName(),
+                        owner.getLastName(),
+                        owner.getAge(),
+                        owner.getAddress(),
+                        owner.getPhone(),
+                        owner.getEmail());
+            }
+        }
+    }
+
+    @Override
+    public Optional<Owner> findOwnerById(int id) throws Exception {
+        if (id <= 0)
+            return Optional.empty();
+
+        String sql = "SELECT * FROM owners WHERE id = ?";
+
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next())
+                    return Optional.empty();
+
+                return Optional.of(mapRow(rs));
+            }
+        }
+    }
+
+    @Override
+    public List<Owner> findAllOwners() throws Exception {
+
+        String sql = "SELECT * FROM owners ORDER BY Id";
+
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            ArrayList<Owner> out = new ArrayList<>();
+            while (rs.next())
+                out.add(mapRow(rs));
+            return out;
+        }
+    }
+
+    @Override
+    public boolean deleteById(int id) throws Exception {
+        if (id <= 0)
+            return false;
+
+        String sql = "DELETE FROM owners WHERE Id = ?";
+
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() == 1;
+        }
+    }
+
+    @Override
+    public List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception {
+        List<Owner> all = findAllOwners();
+        List<Owner> result = new ArrayList<>();
+        for (Owner owner : all)
+            if (filter.test(owner))
+                result.add(owner);
+        return result;
+    }
+}

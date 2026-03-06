@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.*;
 
-public class CatService {
+public class CatService implements Service{
     private final CatDao dao;
     public CatService(CatDao dao) {
         if (dao == null)

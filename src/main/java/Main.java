@@ -1,36 +1,44 @@
 void main() throws Exception {
-    CatService service = getCatService();
+    ServiceFactory serviceFactory = new ServiceFactory();
+    CatService catService =  serviceFactory.createCatService();
+    OwnerService ownerService = serviceFactory.createOwnerService();
 
-    List<Cat> cats = service.listCats();
+    System.out.println("\n#####################################");
+    System.out.println("           Owners:");
+    System.out.println("#####################################\n");
+
+    List<Cat> cats = catService.listCats();
     Cat cat = cats.getFirst();
 
-    String json = service.catToJSON(cat);
+    String json = catService.catToJSON(cat);
     IO.println(json);
 
-    Cat cat1 = service.catFromJSON(json);
+    Cat cat1 = catService.catFromJSON(json);
 
     IO.println(cat1.getName());
 
-    String jsonList = service.catListToJSON(cats);
+    String jsonList = catService.catListToJSON(cats);
 
     IO.println(jsonList);
 
+    System.out.println("\n#####################################");
+    System.out.println("           Owners:");
+    System.out.println("#####################################\n");
 
-}
 
-private static CatService getCatService() {
-    String OS = System.getProperty("os.name").toLowerCase();
-    String url;
-    if (OS.contains("mac")) {
-        url = "jdbc:mysql://localhost:8889/CatnOwner?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    } else if (OS.contains("win")) {
-        url = "jdbc:mysql://localhost:3306/CatnOwner?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    } else {
-        throw new RuntimeException("Unsupported OS");
-    }
-    String user = "root";
-    String pass = "root";
 
-    CatDao dao = new JdbcCatDao(url, user, pass);
-    return new CatService(dao);
+    List<Owner> owners = ownerService.listOwners();
+    Owner owner = owners.getFirst();
+
+    String ownerJson = ownerService.ownerToJson(owner);
+    IO.println(ownerJson);
+
+    Owner owner1 = ownerService.ownerFromJson(ownerJson);
+
+    IO.println(owner1.getFirstName());
+
+    String ownerJsonList = ownerService.ownerListToJson(owners);
+
+    IO.println(ownerJsonList);
+
 }
