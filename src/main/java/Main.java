@@ -4,7 +4,7 @@ void main() throws Exception {
     OwnerService ownerService = serviceFactory.createOwnerService();
 
     System.out.println("\n#####################################");
-    System.out.println("           Owners:");
+    System.out.println("           Cats:");
     System.out.println("#####################################\n");
 
     List<Cat> cats = catService.listCats();
@@ -40,5 +40,9 @@ void main() throws Exception {
     String ownerJsonList = ownerService.ownerListToJson(owners);
 
     IO.println(ownerJsonList);
+
+    System.out.println(ownerService.getOwner(1));
+    ownerService.updateOwner(1, new Owner("Jeff", "Doe", 432, "Somewhere", "+35312345678", "fake@email.com"));
+    System.out.println(ownerService.getOwner(1));
 
 }

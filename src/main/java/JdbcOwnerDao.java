@@ -117,6 +117,27 @@ public class JdbcOwnerDao implements OwnerDao{
     }
 
     @Override
+    public Owner updateOwner(int id, Owner owner) throws Exception{
+        String sql = "UPDATE owners SET FirstName = ?, LastName = ?, Age = ?, Address = ?, Phone = ?, Email = ? WHERE ID = ?;";
+        try (Connection c = open();
+            PreparedStatement ps = c.prepareStatement(sql)){
+            ps.setString(1, owner.getFirstName());
+            ps.setString(2, owner.getLastName());
+            ps.setInt(3, owner.getAge());
+            ps.setString(4, owner.getAddress());
+            ps.setString(5, owner.getPhone());
+            ps.setString(6, owner.getEmail());
+            ps.setInt(7, id);
+
+            int rows = ps.executeUpdate();
+            if (rows != 1)
+                throw new IllegalArgumentException("Update failed for id: " + id);
+
+            return new Owner(id, owner.getFirstName(),owner.getLastName(),owner.getAge(),owner.getAddress(),owner.getPhone(),owner.getEmail());
+        }
+    }
+
+    @Override
     public List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception {
         List<Owner> all = findAllOwners();
         List<Owner> result = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class OwnerService implements Service{
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
@@ -34,6 +35,16 @@ public class OwnerService implements Service{
             IO.println("Owner was not deleted");
         }
     }
+
+    public Owner updateOwner(int id, Owner owner) throws Exception {
+        return dao.updateOwner(id, owner);
+    }
+
+    public List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception {
+        return dao.findOwnersByFilter(filter);
+    };
+
+
     public String ownerToJson(Owner owner) throws JsonProcessingException {
         return JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(owner);
     }

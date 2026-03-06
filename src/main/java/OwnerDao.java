@@ -7,5 +7,7 @@ public interface OwnerDao {
     Optional<Owner> findOwnerById(int id) throws Exception;
     List<Owner> findAllOwners() throws Exception;
     boolean deleteById(int id) throws Exception;
+    Owner updateOwner(int id, Owner owner) throws Exception;
     List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception;
+
 }
