@@ -1,7 +1,7 @@
+package domain;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.sql.Date;
 
 public class Owner {
     private final int id;

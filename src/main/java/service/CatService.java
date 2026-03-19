@@ -1,11 +1,15 @@
+package service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dao.CatDao;
+import domain.Cat;
+import domain.Gender;
 
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.*;
 
-public class CatService implements Service{
+public class CatService implements Service {
     private final CatDao dao;
     public CatService(CatDao dao) {
         if (dao == null)

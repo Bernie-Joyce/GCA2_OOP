@@ -1,3 +1,8 @@
+import domain.*;
+import service.CatService;
+import service.OwnerService;
+import service.ServiceFactory;
+
 void main() throws Exception {
     ServiceFactory serviceFactory = new ServiceFactory();
     CatService catService =  serviceFactory.createCatService();

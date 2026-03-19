@@ -1,10 +1,15 @@
+package dao.jdbc;
+
+import dao.OwnerDao;
+import domain.Owner;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class JdbcOwnerDao implements OwnerDao{
+public class JdbcOwnerDao implements OwnerDao {
     private final String _url;
     private final String _user;
     private final String _pass;

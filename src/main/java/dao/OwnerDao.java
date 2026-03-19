@@ -1,3 +1,7 @@
+package dao;
+
+import domain.Owner;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;

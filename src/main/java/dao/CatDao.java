@@ -1,4 +1,8 @@
+package dao;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
+import domain.Cat;
+import domain.Gender;
 
 import java.sql.Date;
 import java.util.List;

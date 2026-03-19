@@ -1,12 +1,16 @@
+package service;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.OwnerDao;
+import domain.Owner;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class OwnerService implements Service{
+public class OwnerService implements Service {
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private final OwnerDao dao;
 
