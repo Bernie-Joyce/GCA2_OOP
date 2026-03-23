@@ -1,12 +1,10 @@
 package server;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.InputMismatchException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.*;
 import java.net.*;
-import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import protocol.*;
 import service.CatService;
@@ -14,7 +12,6 @@ import service.NutritionService;
 import service.OwnerService;
 import service.ServiceFactory;
 
-import javax.sound.sampled.Port;
 
 public class server {
     private final int port;
@@ -79,7 +76,6 @@ public class server {
                 while ((line = in.readLine()) != null) {
 
                     Request req = MAPPER.readValue(line, Request.class);
-//                  System.out.println("ECHO: " + line);
                     ServiceFactory fact = new ServiceFactory();
                     OwnerService ownerService =  fact.createOwnerService();
                     NutritionService nutritionService =  fact.createNutritionService();

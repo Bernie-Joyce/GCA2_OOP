@@ -1,5 +1,7 @@
 package protocol;
 
+import server.ErrorType;
+
 public class Response <T> {
     private String fStatus;
     private String fMessage;
@@ -36,8 +38,8 @@ public class Response <T> {
         return new Response<>("OK",message, data);}
 
     //Failure Method Response
-    public static <T>Response<T> failure(String message){
-        return new Response<>("ERROR", message, null);
+    public static <T>Response<T> failure(String message, T data){
+        return new Response<>("ERROR", message, data);
     }
 
 
