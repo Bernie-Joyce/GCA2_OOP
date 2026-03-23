@@ -6,6 +6,7 @@ import domain.Cat;
 import domain.Gender;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,14 +17,17 @@ public class CatService implements Service {
             throw new IllegalArgumentException("dao is null");
         this.dao = dao;
     }
-    public int createCat(int ownerId, String name, Gender gender, String breed, Date dateOfBirth, String color, String identifyingMarkings) throws Exception {
-        return dao.insert(ownerId, name, gender, breed, dateOfBirth, color, identifyingMarkings);
+    public int createCat(Cat cat) throws Exception {
+        return dao.insert(cat);
     }
     public Optional<Cat> getCat(int id) throws Exception {
         return dao.findById(id);
     }
     public List<Cat> listCats() throws Exception {
         return dao.findAll();
+    }
+    public Cat updateCat(int id , Cat cat) throws SQLException {
+        return dao.update(id,cat);
     }
     public void deleteCat(int id) throws Exception {
         if (dao.deleteById(id)) {

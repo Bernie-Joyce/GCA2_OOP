@@ -61,6 +61,16 @@ public class RequestRouter {
             return Response.success("Owner deleted successfully", null);
         });
 
+        handlers.put(RequestType.GET_NUTRITION_BY_CAT_ID, (req) -> {
+            Optional<Nutrition> optionalNutrition = nutritionService.getNutrition(req.getPayload().asInt());
+            if (optionalNutrition.isPresent()) {
+                Nutrition nutrition = optionalNutrition.get();
+                return Response.success("Retrieved Nutrition ", nutrition);
+            } else {
+                return Response.failure("Nutrition not found");
+            }
+        });
+
         handlers.put(RequestType.GET_CAT_BY_ID, (req) -> {
             Optional<Cat> optionalCat = catService.getCat(req.getPayload().asInt());
             if (optionalCat.isPresent()) {
@@ -71,14 +81,30 @@ public class RequestRouter {
             }
         });
 
-        handlers.put(RequestType.GET_NUTRITION_BY_CAT_ID, (req) -> {
-            Optional<Nutrition> optionalNutrition = nutritionService.getNutrition(req.getPayload().asInt());
-            if (optionalNutrition.isPresent()) {
-                Nutrition nutrition = optionalNutrition.get();
-                return Response.success("Retrieved Nutrition ", nutrition);
-            } else {
-                return Response.failure("Nutrition not found");
+        handlers.put(RequestType.GET_ALL_CATS, req -> {
+            List<Cat> cats = catService.listCats();
+            return Response.success("retrieved " + cats.size() + " owners", cats);
+        });
+
+        handlers.put(RequestType.UPDATE_CAT, req -> {
+            Cat_Request catRequest = MAPPER.treeToValue(req.getPayload(), Cat_Request.class);
+            catService.updateCat(catRequest.getId(), catRequest.getCat());
+            return Response.success("Updated successfully", catRequest.getCat());
+        });
+
+        handlers.put(RequestType.DELETE_CAT, req -> {
+            int catId = req.getPayload().asInt();
+            if (catService.getCat(catId).isEmpty()) {
+                return Response.failure("Cat not found");
             }
+            catService.deleteCat(catId);
+            return Response.success("Cat deleted successfully", null);
+        });
+
+        handlers.put(RequestType.CREATE_CAT, req -> {
+            Cat cat = MAPPER.treeToValue(req.getPayload(), Cat.class);
+            catService.createCat(cat);
+            return Response.success("Successfully created cat", cat);
         });
     }
 

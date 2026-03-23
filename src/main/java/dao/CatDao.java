@@ -5,12 +5,14 @@ import domain.Cat;
 import domain.Gender;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface CatDao {
-    int insert(int OwnerId, String Name, Gender Gender, String Breed, Date DateOfBirth, String Colour, String IdentifyingMarkings) throws Exception;
+    int insert(Cat cat) throws Exception;
+    Cat update(int id, Cat cat) throws SQLException;
     Optional<Cat> findById(int id) throws Exception;
     List<Cat> findAll() throws Exception;
     boolean deleteById(int id) throws Exception;

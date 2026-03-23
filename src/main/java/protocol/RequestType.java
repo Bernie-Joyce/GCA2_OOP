@@ -15,6 +15,7 @@ public enum RequestType {
     GET_CAT_BY_ID,
     CREATE_CAT,
     DELETE_CAT,
+    UPDATE_CAT,
     FILTER_CATS,
 
     // Nutrition service
