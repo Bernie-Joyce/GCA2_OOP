@@ -106,6 +106,12 @@ public class RequestRouter {
             catService.createCat(cat);
             return Response.success("Successfully created cat", cat);
         });
+
+        handlers.put(RequestType.FILTER_GENDER_CAT, req -> {
+            Gender gender = MAPPER.treeToValue(req.getPayload(), Gender.class);
+            List<Cat> cat = catService.filterGender(gender);
+            return Response.success("FIltered by " + gender.name(), cat);
+        });
     }
 
     public Response<?> handleRequest(Request request) {
