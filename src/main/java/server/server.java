@@ -12,40 +12,70 @@ import protocol.*;
 import javax.sound.sampled.Port;
 
 public class server {
-    private static final int port = 9000;
+    private final int port;
 
-    private static ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private ExecutorService pool;
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("PORT LISTENING ON: " + port);
+    public server(int port){
+        if (port < 1_024 || port > 65_535)
+            throw new IllegalArgumentException("port must be 1024–65535");
+        this.port = port;
+        pool = Executors.newCachedThreadPool();
+    }
+
+    public void start() throws IOException {
+        System.out.println("Server starting on port " + port);
+
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            while (true) {
+                Socket clientSocket = serverSocket.accept();    // block until a client arrives
+                System.out.println("Accepted: " + clientSocket.getInetAddress());
+                pool.submit(new ClientHandler(clientSocket)); // hand off to pool
+            }
+        }
+        finally{
+            pool.shutdown();
+        }
+    }
 
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Client connected: " + clientSocket.getInetAddress());
+    private static class ClientHandler implements Runnable {
 
+        private Socket socket;
 
-            try (PrintWriter out = new PrintWriter(
-                    new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8), true);
-                 BufferedReader in = new BufferedReader(
-                         new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8))) {
+        // Creates: a handler for the given socket
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
+        }
+
+        // Runs: the client session — reads lines and echoes them
+        @Override
+        public void run() {
+            System.out.println("Handling client on " + Thread.currentThread().getName());
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                 PrintWriter out  = new PrintWriter(socket.getOutputStream(), true)) {
 
                 String line;
                 while ((line = in.readLine()) != null) {
-                    System.out.println("Received: " + line);
-
-                    // Parse the incoming request
-                    Request request = MAPPER.readValue(line, Request.class);
-                    Response<String> response = Response.success(
-                            "Echo: " + request.getType(), "ok"
-                    );
-
-                    // Send the response back on one line
-                    out.println(MAPPER.writeValueAsString(response));
+                    out.println("ECHO: " + line);
                 }
             }
-
+            catch (IOException e) {
+                System.out.println("Client disconnected: " + e.getMessage());
+            }
+            finally {
+                try {
+                    socket.close();
+                }
+                catch (IOException e) {
+                    // nothing useful to do here
+                }
+            }
         }
-
+    }
+     static void main() throws IOException {
+        new server(9_000).start();
 
     }
 }
