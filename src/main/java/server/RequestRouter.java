@@ -1,4 +1,5 @@
 package server;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +53,11 @@ public class RequestRouter {
         });
 
         handlers.put(RequestType.DELETE_OWNER, req -> {
-            ownerService.deleteOwner(req.getPayload().asInt());
+            int ownerId = req.getPayload().asInt();
+            if (ownerService.getOwner(ownerId).isEmpty()) {
+                return Response.failure("Owner not found");
+            }
+            ownerService.deleteOwner(ownerId);
             return Response.success("Owner deleted successfully", null);
         });
 
@@ -66,22 +71,20 @@ public class RequestRouter {
             }
         });
 
-
         handlers.put(RequestType.GET_NUTRITION_BY_CAT_ID, (req) -> {
             Optional<Nutrition> optionalNutrition = nutritionService.getNutrition(req.getPayload().asInt());
             if (optionalNutrition.isPresent()) {
-                Nutrition owner = optionalNutrition.get();
-                return Response.success("Retrieved Nutrition ", owner);
+                Nutrition nutrition = optionalNutrition.get();
+                return Response.success("Retrieved Nutrition ", nutrition);
             } else {
                 return Response.failure("Nutrition not found");
             }
         });
-
-
     }
 
     public Response<?> handleRequest(Request request) {
-        RequestHandler handler = handlers.get(request.getType());
+        RequestType requestType = RequestType.valueOf(request.getType());
+        RequestHandler handler = handlers.get(requestType);
 
         if (handler == null) {
             return Response.failure("Unknown request type: " + request.getType());
