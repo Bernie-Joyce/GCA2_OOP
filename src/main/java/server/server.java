@@ -9,6 +9,10 @@ import java.net.*;
 import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import protocol.*;
+import service.CatService;
+import service.NutritionService;
+import service.OwnerService;
+import service.ServiceFactory;
 
 import javax.sound.sampled.Port;
 
@@ -73,7 +77,18 @@ public class server {
 
                 String line;
                 while ((line = in.readLine()) != null) {
-                    out.println("ECHO: " + line);
+
+                    Request req = MAPPER.readValue(line, Request.class);
+//                  System.out.println("ECHO: " + line);
+                    ServiceFactory fact = new ServiceFactory();
+                    OwnerService ownerService =  fact.createOwnerService();
+                    NutritionService nutritionService =  fact.createNutritionService();
+                    CatService catService =  fact.createCatService();
+                    RequestRouter router = new RequestRouter(ownerService, catService, nutritionService);
+
+                    Response<?> response = router.handleRequest(req);
+                    System.out.println("Success");
+                    out.println(MAPPER.writeValueAsString(response));
                 }
             }
             catch (IOException e) {
