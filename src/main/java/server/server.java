@@ -1,11 +1,12 @@
 package server;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.InputMismatchException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import protocol.*;
 
@@ -35,8 +36,22 @@ public class server {
             }
         }
         finally{
-            pool.shutdown();
+            shutdown();
         }
+    }
+    private void shutdown() {
+        System.out.println("Shutting down thread pool...");
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)) {
+                System.out.println("Pool didn't terminate, forcing shutdown...");
+                pool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+        System.out.println("Thread pool shut down.");
     }
 
     private static class ClientHandler implements Runnable {
