@@ -31,7 +31,7 @@ public class OwnerMenu {
                 case "1" -> handleGetAll();
                 case "2" -> handleGetById();
                 case "3" -> handleAdd();
-                case "4" -> System.out.println("Update");
+                case "4" -> handleUpdate();
                 case "5" -> System.out.println("Delete");
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
@@ -71,7 +71,11 @@ public class OwnerMenu {
 
     private void handleUpdate() {
         try {
-
+            System.out.println("Id to update: ");
+            int id = scanner.nextInt();
+            Owner upOwner = getOwnerDetails(id);
+            Response<JsonNode> res = client.send(RequestType.UPDATE_OWNER, upOwner);
+            System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
 
         }
