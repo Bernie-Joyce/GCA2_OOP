@@ -1,6 +1,7 @@
 package client;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import domain.Owner;
 import protocol.RequestType;
 import protocol.Response;
 
@@ -56,6 +57,26 @@ public class OwnerMenu {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    private void handleAdd() {
+
+    }
+
+    private Owner getOwnerDetails() {
+        System.out.print("First name: ");
+        String firstName = scanner.nextLine().trim();
+        System.out.print("Last name: ");
+        String lastName = scanner.nextLine().trim();
+        System.out.print("Age: ");
+        int age = Integer.parseInt(scanner.nextLine().trim());
+        System.out.print("Address: ");
+        String address = scanner.nextLine().trim();
+        System.out.print("Phone: ");
+        String phone = scanner.nextLine().trim();
+        System.out.print("Email: ");
+        String email = scanner.nextLine().trim();
+        return new Owner(0, firstName, lastName, age, address, phone, email);
     }
 
 }
