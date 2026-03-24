@@ -35,7 +35,7 @@ public class OwnerMenu {
                 case "2" -> handleGetById();
                 case "3" -> handleAdd();
                 case "4" -> handleUpdate();
-                case "5" -> System.out.println("Delete");
+                case "5" -> handleDelete();
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
@@ -102,6 +102,7 @@ public class OwnerMenu {
 
 //    getOwnerDetails
     private Owner getOwnerDetails() {
+        scanner.nextLine();
         System.out.print("First name: ");
         String firstName = scanner.nextLine().trim();
         System.out.print("Last name: ");
@@ -118,6 +119,7 @@ public class OwnerMenu {
     }
 //    overloaded getOwnerDetails for update
     private Owner getOwnerDetails(int id) {
+        scanner.nextLine();
         System.out.print("First name: ");
         String firstName = scanner.nextLine().trim();
         System.out.print("Last name: ");
