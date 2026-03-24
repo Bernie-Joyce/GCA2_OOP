@@ -1,9 +1,18 @@
 package client;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import protocol.RequestType;
+import protocol.Response;
+
 import java.util.Scanner;
 
 public class OwnerMenu {
     private final Scanner scanner = new Scanner(System.in);
+    private Client client;
+
+    OwnerMenu(Client client) {
+        this.client = client;
+    }
 
     public void run() {
         boolean check = true;
@@ -26,6 +35,15 @@ public class OwnerMenu {
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
+        }
+    }
+
+    private void handleGetAll() {
+        try {
+            Response<JsonNode> res = client.send(RequestType.GET_ALL_OWNERS, null);
+            System.out.println(res.getData().toPrettyString());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
