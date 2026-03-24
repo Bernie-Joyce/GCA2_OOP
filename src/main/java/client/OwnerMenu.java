@@ -55,6 +55,8 @@ public class OwnerMenu {
         try {
             System.out.println("Owner ID: ");
             int id = scanner.nextInt();
+            scanner.nextLine();
+
             Response<JsonNode> res = client.send(RequestType.GET_OWNER_BY_ID, id);
             System.out.println(res.getData().toPrettyString());
         } catch (Exception e) {
@@ -76,6 +78,7 @@ public class OwnerMenu {
         try {
             System.out.println("Id to update: ");
             int id = scanner.nextInt();
+            scanner.nextLine();
             Owner upOwner = getOwnerDetails(id);
 
             ObjectNode payload = MAPPER.createObjectNode();
@@ -93,6 +96,8 @@ public class OwnerMenu {
         try {
             System.out.println("Id to delete:");
             int id = scanner.nextInt();
+            scanner.nextLine();
+
             Response<JsonNode> res = client.send(RequestType.DELETE_OWNER, id);
             System.out.println(res.getStatus());
         } catch (Exception e) {
