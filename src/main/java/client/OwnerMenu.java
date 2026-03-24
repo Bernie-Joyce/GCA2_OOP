@@ -7,6 +7,7 @@ import domain.Owner;
 import protocol.RequestType;
 import protocol.Response;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class OwnerMenu {
@@ -45,7 +46,12 @@ public class OwnerMenu {
     private void handleGetAll() {
         try {
             Response<JsonNode> res = client.send(RequestType.GET_ALL_OWNERS, null);
-            System.out.println(res.getData().toPrettyString());
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getData().toPrettyString());
+            }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -58,7 +64,12 @@ public class OwnerMenu {
             scanner.nextLine();
 
             Response<JsonNode> res = client.send(RequestType.GET_OWNER_BY_ID, id);
-            System.out.println(res.getData().toPrettyString());
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getData().toPrettyString());
+            }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -68,7 +79,12 @@ public class OwnerMenu {
         try {
             Owner newOwner = getOwnerDetails(0);
             Response<JsonNode> res = client.send(RequestType.CREATE_OWNER, newOwner);
-            System.out.println(res.getStatus() + res.getData().toPrettyString());
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -86,7 +102,12 @@ public class OwnerMenu {
             payload.set("owner", MAPPER.valueToTree(upOwner));
 
             Response<JsonNode> res = client.send(RequestType.UPDATE_OWNER, payload);
-            System.out.println(res.getStatus() + res.getData().toPrettyString());
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -99,7 +120,12 @@ public class OwnerMenu {
             scanner.nextLine();
 
             Response<JsonNode> res = client.send(RequestType.DELETE_OWNER, id);
-            System.out.println(res.getStatus());
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getMessage());
+            }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
