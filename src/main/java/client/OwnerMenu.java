@@ -27,8 +27,8 @@ public class OwnerMenu {
             System.out.print("Choice: ");
 
             switch(scanner.nextLine().trim()) {
-                case "1" -> System.out.println("Get all");
-                case "2" -> System.out.println("Get by ID");
+                case "1" -> handleGetAll();
+                case "2" -> handleGetById();
                 case "3" -> System.out.println("Add");
                 case "4" -> System.out.println("Update");
                 case "5" -> System.out.println("Delete");
@@ -41,6 +41,17 @@ public class OwnerMenu {
     private void handleGetAll() {
         try {
             Response<JsonNode> res = client.send(RequestType.GET_ALL_OWNERS, null);
+            System.out.println(res.getData().toPrettyString());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private void handleGetById() {
+        try {
+            System.out.println("Owner ID: ");
+            int id = scanner.nextInt();
+            Response<JsonNode> res = client.send(RequestType.GET_OWNER_BY_ID, id);
             System.out.println(res.getData().toPrettyString());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
