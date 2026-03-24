@@ -64,7 +64,7 @@ public class OwnerMenu {
 
     private void handleAdd() {
         try {
-            Owner newOwner = getOwnerDetails();
+            Owner newOwner = getOwnerDetails(0);
             Response<JsonNode> res = client.send(RequestType.CREATE_OWNER, newOwner);
             System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
@@ -100,24 +100,7 @@ public class OwnerMenu {
         }
     }
 
-//    getOwnerDetails
-    private Owner getOwnerDetails() {
-        scanner.nextLine();
-        System.out.print("First name: ");
-        String firstName = scanner.nextLine().trim();
-        System.out.print("Last name: ");
-        String lastName = scanner.nextLine().trim();
-        System.out.print("Age: ");
-        int age = Integer.parseInt(scanner.nextLine().trim());
-        System.out.print("Address: ");
-        String address = scanner.nextLine().trim();
-        System.out.print("Phone: ");
-        String phone = scanner.nextLine().trim();
-        System.out.print("Email: ");
-        String email = scanner.nextLine().trim();
-        return new Owner(0, firstName, lastName, age, address, phone, email);
-    }
-//    overloaded getOwnerDetails for update
+
     private Owner getOwnerDetails(int id) {
         scanner.nextLine();
         System.out.print("First name: ");
