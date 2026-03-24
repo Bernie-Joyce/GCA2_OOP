@@ -30,7 +30,7 @@ public class OwnerMenu {
             switch(scanner.nextLine().trim()) {
                 case "1" -> handleGetAll();
                 case "2" -> handleGetById();
-                case "3" -> System.out.println("Add");
+                case "3" -> handleAdd();
                 case "4" -> System.out.println("Update");
                 case "5" -> System.out.println("Delete");
                 case "0" -> check = false;
@@ -60,7 +60,13 @@ public class OwnerMenu {
     }
 
     private void handleAdd() {
-
+        try {
+            Owner newOwner = getOwnerDetails();
+            Response<JsonNode> res = client.send(RequestType.CREATE_OWNER, newOwner);
+            System.out.println(res.getStatus() + res.getData().toPrettyString());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     private Owner getOwnerDetails() {
