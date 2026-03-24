@@ -77,7 +77,7 @@ public class OwnerMenu {
             Response<JsonNode> res = client.send(RequestType.UPDATE_OWNER, upOwner);
             System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
-
+            System.out.println("Error:" + e.getMessage());
         }
     }
 
