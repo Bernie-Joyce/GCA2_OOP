@@ -1,6 +1,8 @@
 package client;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Owner;
 import protocol.RequestType;
 import protocol.Response;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class OwnerMenu {
     private final Scanner scanner = new Scanner(System.in);
     private Client client;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     OwnerMenu(Client client) {
         this.client = client;
@@ -74,7 +77,12 @@ public class OwnerMenu {
             System.out.println("Id to update: ");
             int id = scanner.nextInt();
             Owner upOwner = getOwnerDetails(id);
-            Response<JsonNode> res = client.send(RequestType.UPDATE_OWNER, upOwner);
+
+            ObjectNode payload = MAPPER.createObjectNode();
+            payload.put("id", id);
+            payload.set("owner", MAPPER.valueToTree(upOwner));
+
+            Response<JsonNode> res = client.send(RequestType.UPDATE_OWNER, payload);
             System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
