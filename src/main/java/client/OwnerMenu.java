@@ -81,6 +81,17 @@ public class OwnerMenu {
         }
     }
 
+    private void handleDelete() {
+        try {
+            System.out.println("Id to delete:");
+            int id = scanner.nextInt();
+            Response<JsonNode> res = client.send(RequestType.DELETE_OWNER, id);
+            System.out.println(res.getStatus());
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
 //    getOwnerDetails
     private Owner getOwnerDetails() {
         System.out.print("First name: ");
