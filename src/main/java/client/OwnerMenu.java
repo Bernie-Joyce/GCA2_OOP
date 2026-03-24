@@ -133,7 +133,6 @@ public class OwnerMenu {
 
 
     private Owner getOwnerDetails(int id) {
-        scanner.nextLine();
         System.out.print("First name: ");
         String firstName = scanner.nextLine().trim();
         System.out.print("Last name: ");
