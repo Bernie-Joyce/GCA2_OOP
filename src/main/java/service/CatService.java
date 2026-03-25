@@ -37,7 +37,8 @@ public class CatService implements Service {
         }
     }
     public List<Cat> filterGender(Gender gender) throws Exception {
-        return dao.filter(dao.findAll(), cat -> cat.getGender().equals(gender));
+        return dao.filter(dao.findAll(), cat -> cat.getGender().equals(gender)
+        );
     }
     public String catToJSON(Cat cat) throws JsonProcessingException {
         return dao.serialise(cat);
