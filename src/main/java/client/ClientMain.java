@@ -9,6 +9,7 @@ public class ClientMain {
         try (Client client = new Client("localhost", 9000)) {
             boolean loopCheck = true;
             OwnerMenu oMenu = new OwnerMenu(client);
+            NutritionMenu nMenu = new NutritionMenu(client);
             while(loopCheck) {
                 System.out.println("\n=== Main Menu ===");
                 System.out.println("1. Cats");
@@ -20,7 +21,7 @@ public class ClientMain {
                 switch(scanner.nextLine().trim()) {
                     case "1" -> System.out.println("Cats");
                     case "2" -> oMenu.run();
-                    case "3" -> System.out.println("Nutrients");
+                    case "3" -> nMenu.run();
                     case "0" -> loopCheck = false;
                     default -> System.out.println("Invalid option");
                 }

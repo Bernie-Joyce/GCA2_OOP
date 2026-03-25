@@ -132,6 +132,38 @@ public class RequestRouter {
             List<Cat> cat = catService.filterGender(gender);
             return Response.success("Filtered by " + gender.name(), cat);
         });
+
+        handlers.put(RequestType.GET_ALL_NUTRITION, (req) -> {
+            List<Nutrition> list = nutritionService.listNutrition();
+            return Response.success("Retrived " + list.size() + " Nutrition Plans", list);
+        });
+        handlers.put(RequestType.CREATE_NUTRITION, req -> {
+            Nutrition nutrition = MAPPER.treeToValue(req.getPayload(), Nutrition.class);
+            nutritionService.createNutrition(nutrition);
+            return Response.success("New Nutrition Plan Created created", null);
+        });
+
+        handlers.put(RequestType.UPDATE_NUTRITION, req -> {
+            Nutrition_Request nutritionReq = MAPPER.treeToValue(req.getPayload(), Nutrition_Request.class);
+            Nutrition nutrition = nutritionReq.getNutrition();
+            int id = nutritionReq.getId();
+            nutritionService.updateNutrition(id, nutrition);
+            return Response.success("Updated owner", null);
+        });
+
+        handlers.put(RequestType.DELETE_NUTRITION, req -> {
+            int id = req.getPayload().asInt();
+            nutritionService.deleteNutrition(id);
+            return Response.success("Nutrition deleted successfully", null);
+        });
+
+
+        handlers.put(RequestType.FILTER_NUTRITION, req -> {
+            int q = req.getPayload().asInt();
+            List<Nutrition> list = nutritionService.filterNutrition(q);
+            return Response.success("Filtered List: ", list);
+        });
+
     }
 
     public Response<?> handleRequest(Request request) {
@@ -146,7 +178,6 @@ public class RequestRouter {
         }
 
         try {
-            // This calls the lambda function mapped in the constructor
             return handler.handle(request);
         } catch (Exception e) {
             return Response.failure(
@@ -159,7 +190,8 @@ public class RequestRouter {
     private String getValidationErrorCat(Cat cat) {
         if (cat.getName() == null || cat.getName().isBlank()) return "Cat name is required";
         if (cat.getGender() == null) return "Cat gender is required";
-        if (cat.getIdentifyingMarkings() == null || cat.getIdentifyingMarkings().isBlank()) return "Identifying markings are required";
+        if (cat.getIdentifyingMarkings() == null || cat.getIdentifyingMarkings().isBlank())
+            return "Identifying markings are required";
         if (cat.getBreed() == null || cat.getBreed().isBlank()) return "Cat breed is required";
         if (cat.getDateOfBirth() == null) return "Cat date of birth is required";
         return null;

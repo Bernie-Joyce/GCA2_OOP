@@ -41,8 +41,8 @@ public class NutritionService implements Service {
         return dao.update(catId, nutrition);
     }
 
-    public List<Nutrition> filterNutrition(Predicate<Nutrition> filter) throws Exception {
-        return dao.filter(dao.findAll(), filter);
+    public List<Nutrition> filterNutrition(int quota) throws Exception {
+        return dao.filter(dao.findAll(), nutrition -> nutrition.getMealsPerDay() > quota);
     }
 
     public String nutritionToJson(Nutrition nutrition) throws JsonProcessingException {

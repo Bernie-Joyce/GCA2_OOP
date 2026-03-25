@@ -76,6 +76,7 @@ public class server {
                 while ((line = in.readLine()) != null) {
 
                     Request req = MAPPER.readValue(line, Request.class);
+//                  System.out.println("ECHO: " + line);
                     ServiceFactory fact = new ServiceFactory();
                     OwnerService ownerService =  fact.createOwnerService();
                     NutritionService nutritionService =  fact.createNutritionService();

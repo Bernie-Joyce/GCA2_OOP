@@ -31,7 +31,6 @@ public class ServiceFactory {
         OwnerDao dao = new JdbcOwnerDao(url, user, pass);
         return new OwnerService(dao);
     }
-
     public NutritionService createNutritionService(){
         NutritionDao dao = new JdbcNutritionDao(url, user, pass);
         return new NutritionService(dao);
