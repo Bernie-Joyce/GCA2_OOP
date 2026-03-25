@@ -97,7 +97,6 @@ public class RequestRouter {
 
         handlers.put(RequestType.UPDATE_CAT, req -> {
             Cat_Request catRequest = MAPPER.treeToValue(req.getPayload(), Cat_Request.class);
-
             Cat cat = catRequest.getCat();
 
             String error = getValidationErrorCat(cat);
@@ -142,35 +141,64 @@ public class RequestRouter {
 
         handlers.put(RequestType.GET_ALL_NUTRITION, (req) -> {
             List<Nutrition> list = nutritionService.listNutrition();
-            return Response.success("Retrived " + list.size() + " Nutrition Plans", list);
+            if (list.isEmpty()) {
+                return Response.failure("Failed to get data", null,ErrorType.RESOURCE_NOT_FOUND);
+            } else {
+                return Response.success("Retrived " + list.size() + " Nutrition Plans", list, ErrorType.SUCCESS);
+
+            }
         });
+
         handlers.put(RequestType.CREATE_NUTRITION, req -> {
-            Nutrition nutrition = MAPPER.treeToValue(req.getPayload(), Nutrition.class);
-            nutritionService.createNutrition(nutrition);
-            return Response.success("New Nutrition Plan Created created", null);
+                Nutrition nutrition = MAPPER.treeToValue(req.getPayload(), Nutrition.class);
+                try {
+                    List<Nutrition> list = nutritionService.listNutrition(); // amount of nutrtion entries
+                    int id = list.size()+1; // nutri entries +1
+                    Optional<Cat> c = catService.getCat(id); // does this ID exist in cats.... Nutri length +1
+                    if(c.isPresent()){
+                        nutritionService.createNutrition(nutrition);
+                        return Response.success("New Nutrition Plan Created created", null, ErrorType.SUCCESS);
+                    }
+                    else{
+                        return Response.failure("id is not present", null, ErrorType.CONFLICT);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return Response.failure("Incorrect Data Types",null,  ErrorType.VALIDATION_ERROR);
+                }
         });
 
         handlers.put(RequestType.UPDATE_NUTRITION, req -> {
             Nutrition_Request nutritionReq = MAPPER.treeToValue(req.getPayload(), Nutrition_Request.class);
             Nutrition nutrition = nutritionReq.getNutrition();
             int id = nutritionReq.getId();
-            nutritionService.updateNutrition(id, nutrition);
-            return Response.success("Updated owner", null);
+            Optional<Nutrition> n = nutritionService.getNutrition(id);
+            if (n.isPresent()) {
+                nutritionService.updateNutrition(id, nutrition);
+                return Response.success("Updated owner", null, ErrorType.SUCCESS);
+            }
+            return Response.failure("Failed to update", null, ErrorType.RESOURCE_NOT_FOUND);
         });
 
         handlers.put(RequestType.DELETE_NUTRITION, req -> {
             int id = req.getPayload().asInt();
-            nutritionService.deleteNutrition(id);
-            return Response.success("Nutrition deleted successfully", null);
+            Optional<Nutrition> n = nutritionService.getNutrition(id);
+            if (n.isPresent()) {
+                nutritionService.deleteNutrition(id);
+                return Response.success("Nutrition deleted successfully", null, ErrorType.SUCCESS);
+            } else {
+                return Response.failure("ID does not exist", null,ErrorType.RESOURCE_NOT_FOUND);
+            }
         });
-
 
         handlers.put(RequestType.FILTER_NUTRITION, req -> {
             int q = req.getPayload().asInt();
             List<Nutrition> list = nutritionService.filterNutrition(q);
-            return Response.success("Filtered List: ", list);
+            if (list.isEmpty()) {
+                return Response.success("No values to Display", null, ErrorType.SUCCESS);
+            }
+            return Response.success("Filtered List: ", list, ErrorType.SUCCESS);
         });
-
     }
 
     public Response<?> handleRequest(Request request) {

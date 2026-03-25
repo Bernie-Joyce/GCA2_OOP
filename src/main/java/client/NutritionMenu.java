@@ -2,6 +2,7 @@ package client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -28,11 +29,12 @@ public class NutritionMenu {
         boolean check = true;
         while (check) {
             System.out.println("\n=== Nutrition Menu ===");
-            System.out.println("1. Get all owners");
-            System.out.println("2. Get owner by ID");
-            System.out.println("3. Add owner");
-            System.out.println("4. Update owner");
-            System.out.println("5. Delete owner");
+            System.out.println("1. Get all Nutrition Plans");
+            System.out.println("2. Get Nutrition plan by ID");
+            System.out.println("3. Add Nutri Plan");
+            System.out.println("4. Update Nutri Plan");
+            System.out.println("5. Delete Nutri Plan");
+            System.out.println("6. Filter Nutri Plans by");
             System.out.println("0. Exit");
             System.out.print("Choice: ");
 
@@ -42,6 +44,7 @@ public class NutritionMenu {
                     case "3" -> handleAdd();
                     case "4" -> handleUpdate();
                     case "5" -> handleDelete();
+                    case "6" -> handleFilter();
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
@@ -59,8 +62,11 @@ public class NutritionMenu {
 
     public void handleGetById() {
         try {
-            Response<JsonNode> res = client.send(RequestType.GET_NUTRITION_BY_CAT_ID, null);
+            System.out.println("Cat ID: ");
+            int ID = scanner.nextInt();
+            Response<JsonNode> res = client.send(RequestType.GET_NUTRITION_BY_CAT_ID, ID);
             System.out.println(res.getData().toPrettyString());
+            scanner.nextLine();
         }catch (Exception e){
             System.out.println("Error: "+ e.getMessage());
         }
@@ -68,9 +74,7 @@ public class NutritionMenu {
 
     public void handleAdd(){
         try {
-
             Nutrition newNutrition = getNutritionDetails(0);
-
             Response<JsonNode> res = client.send(RequestType.CREATE_NUTRITION, newNutrition);
             System.out.println(res.getData().toPrettyString());
         }catch (Exception e){
@@ -108,24 +112,30 @@ public class NutritionMenu {
         }
     }
 
+    public void handleFilter(){
+        System.out.println("Meals per day to Filter By:");
+        int meals = scanner.nextInt();
+        try {
+            Response<JsonNode> res = client.send(RequestType.FILTER_NUTRITION, meals);
+        } catch (IOException e) {
+            System.out.println("ERROR: "+e.getMessage());
+        }
+    }
+
 
     private Nutrition getNutritionDetails(int id){
-        scanner.nextLine();
         System.out.println("Daily Calories: ");
         int kcals = scanner.nextInt();
         scanner.nextLine();
         System.out.println("Protein grams: ");
         double protein = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println();
         System.out.println("Fat grams: ");
         double fat = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println();
         System.out.println("Carbohydrate grams: ");
         double carb = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println();
         System.out.println("Water in ml: ");
         int water = scanner.nextInt();
         scanner.nextLine();
@@ -137,7 +147,7 @@ public class NutritionMenu {
         System.out.println("Dietary Restrictions: ");
         String dietRestrictions = scanner.nextLine();
 
-        return new Nutrition(id, kcals, protein, fat, carb, water, mealCount, brand, dietRestrictions);
+        return new Nutrition(12, kcals, protein, fat, carb, water, mealCount, brand, dietRestrictions);
     }
 }
 

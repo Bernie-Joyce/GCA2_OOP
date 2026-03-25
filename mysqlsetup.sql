@@ -28,7 +28,7 @@ CREATE TABLE `cats` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE `nutrition` (
-   `CatId` int(11) NOT NULL,
+   `CatId` int(11) NOT NULL AUTO_INCREMENT,
    `DailyCaloriesKcal` int(11) NOT NULL,
    `ProteinGrams` double NOT NULL,
    `FatGrams` double NOT NULL,

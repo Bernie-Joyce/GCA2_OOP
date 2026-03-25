@@ -43,32 +43,45 @@ public class JdbcNutritionDao implements NutritionDao {
             rs.getString("DietaryRestrictions")
         );
     }
-
     @Override
     public Nutrition insert(Nutrition nutrition) throws Exception {
         if (nutrition == null)
             throw new IllegalArgumentException("Nutrition cannot be null");
 
-        String sql = "INSERT INTO nutrition(CatId, DailyCaloriesKcal, ProteinGrams, FatGrams, CarbGrams, WaterIntakeMl, MealsPerDay, FoodBrand, DietaryRestrictions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO nutrition(DailyCaloriesKcal, ProteinGrams, FatGrams, CarbGrams, WaterIntakeMl, MealsPerDay, FoodBrand, DietaryRestrictions) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection c = open();
-             PreparedStatement ps = c.prepareStatement(sql)) {
+             PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setInt(1, nutrition.getCatId());
-            ps.setInt(2, nutrition.getDailyCaloriesKcal());
-            ps.setDouble(3, nutrition.getProteinGrams());
-            ps.setDouble(4, nutrition.getFatGrams());
-            ps.setDouble(5, nutrition.getCarbGrams());
-            ps.setInt(6, nutrition.getWaterIntakeMl());
-            ps.setInt(7, nutrition.getMealsPerDay());
-            ps.setString(8, nutrition.getFoodBrand());
-            ps.setString(9, nutrition.getDietaryRestrictions());
+            ps.setInt(1, nutrition.getDailyCaloriesKcal());
+            ps.setDouble(2, nutrition.getProteinGrams());
+            ps.setDouble(3, nutrition.getFatGrams());
+            ps.setDouble(4, nutrition.getCarbGrams());
+            ps.setInt(5, nutrition.getWaterIntakeMl());
+            ps.setInt(6, nutrition.getMealsPerDay());
+            ps.setString(7, nutrition.getFoodBrand());
+            ps.setString(8, nutrition.getDietaryRestrictions());
 
             int rows = ps.executeUpdate();
             if (rows != 1)
                 throw new IllegalArgumentException("insert failed, rows = " + rows);
 
-            return nutrition;
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    return new Nutrition(generatedId,
+                            nutrition.getDailyCaloriesKcal(),
+                            nutrition.getProteinGrams(),
+                            nutrition.getFatGrams(),
+                            nutrition.getCarbGrams(),
+                            nutrition.getWaterIntakeMl(),
+                            nutrition.getMealsPerDay(),
+                            nutrition.getFoodBrand(),
+                            nutrition.getDietaryRestrictions());
+                } else {
+                    throw new SQLException("Insert succeeded but no generated key was returned");
+                }
+            }
         }
     }
 

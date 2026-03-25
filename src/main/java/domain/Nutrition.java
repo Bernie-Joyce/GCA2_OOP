@@ -28,8 +28,8 @@ public Nutrition(
     @JsonProperty("foodBrand") String foodBrand,
     @JsonProperty("dietaryRestrictions") String dietaryRestrictions)
 {
-  if (catId <= 0)
-    throw new IllegalArgumentException("catId must be greater than 0");
+//  if (catId <= 0)
+//    throw new IllegalArgumentException("catId must be greater than 0");
 if (dailyCaloriesKcal <= 0)
     throw new IllegalArgumentException("Daily calories must be greater than 0");
 if (proteinGrams <= 0)
