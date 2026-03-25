@@ -10,6 +10,7 @@ public class ClientMain {
             boolean loopCheck = true;
             OwnerMenu oMenu = new OwnerMenu(client);
             NutritionMenu nMenu = new NutritionMenu(client);
+            CatMenu catMenu = new CatMenu(client);
             while(loopCheck) {
                 System.out.println("\n=== Main Menu ===");
                 System.out.println("1. Cats");
@@ -19,7 +20,7 @@ public class ClientMain {
                 System.out.print("Choice: ");
 
                 switch(scanner.nextLine().trim()) {
-                    case "1" -> System.out.println("Cats");
+                    case "1" -> catMenu.run();
                     case "2" -> oMenu.run();
                     case "3" -> nMenu.run();
                     case "0" -> loopCheck = false;

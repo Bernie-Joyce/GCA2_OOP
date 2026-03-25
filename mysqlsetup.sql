@@ -20,7 +20,7 @@ CREATE TABLE `cats` (
   `Gender` varchar(10) NOT NULL,
   `Breed` varchar(20) NOT NULL,
   `DateOfBirth` timestamp NOT NULL DEFAULT current_timestamp(),
-  `Color` varchar(20) NOT NwULL,
+  `Color` varchar(20) NOT NULL,
   `IdentifyingMarkings` varchar(100) NOT NULL,
   PRIMARY KEY (`Id`),
   KEY `fk_cats_foreign_key` (`OwnerID`),
