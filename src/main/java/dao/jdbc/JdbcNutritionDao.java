@@ -12,12 +12,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * JDBC implementation of {@link NutritionDao}.
+ * Connects to a relational database to perform cat CRUD operations.
+ */
 public class JdbcNutritionDao implements NutritionDao {
     private final String _url;
     private final String _user;
     private final String _pass;
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
+    /**
+     * Creates a new jdbcNutritionDao with the given database credentials.
+     * @param url  the JDBC connection URL
+     * @param user the database username
+     * @param pass the database password
+     * @throws IllegalArgumentException if the URL is null or blank
+     */
     public JdbcNutritionDao(String url, String user, String pass) {
         if (url == null || url.isBlank())
             throw new IllegalArgumentException("url is required");

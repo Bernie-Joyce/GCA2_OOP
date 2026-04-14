@@ -9,11 +9,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * JDBC implementation of {@link OwnerDao}.
+ * Connects to a relational database to perform cat CRUD operations.
+ */
 public class JdbcOwnerDao implements OwnerDao {
     private final String _url;
     private final String _user;
     private final String _pass;
 
+    /**
+     * Creates a new jdbcOwnerDao with the given database credentials.
+     * @param url  the JDBC connection URL
+     * @param user the database username
+     * @param pass the database password
+     * @throws IllegalArgumentException if the URL is null or blank
+     */
     public JdbcOwnerDao(String url, String user, String pass) {
         if (url == null || url.isBlank())
             throw new IllegalArgumentException("url is required");
