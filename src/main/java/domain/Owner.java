@@ -3,6 +3,9 @@ package domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents an owner in the system.
+ */
 public class Owner {
     private final int id;
     private final String firstName;
@@ -12,38 +15,66 @@ public class Owner {
     private final String phone;
     private final String email;
 
+    /**
+     * Creates an Owner with a default ID of 0.
+     * Convenience constructor for new owners before they are persisted.
+     * @param firstName the owner's first name
+     * @param lastName  the owner's last name
+     * @param age       the owner's age
+     * @param address   the owner's address
+     * @param phone     the owner's phone number
+     * @param email     the owner's email address
+     */
     public Owner(String firstName, String lastName, int age, String address, String phone, String email) {
         this(0, firstName, lastName, age, address, phone, email);
     }
 
+    /** Returns the owner's unique ID. */
     public int getId() {
         return id;
     }
 
+    /** Returns the owner's first name. */
     public String getFirstName() {
         return firstName;
     }
 
+    /** Returns the owner's last name. */
     public String getLastName() {
         return lastName;
     }
 
+    /** Returns the owner's age. */
     public int getAge() {
         return age;
     }
 
+    /** Returns the owner's address. */
     public String getAddress() {
         return address;
     }
 
+    /** Returns the owner's phone number. */
     public String getPhone() {
         return phone;
     }
 
+    /** Returns the owner's email address. */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Creates a new Owner with the given attributes.
+     * @param id        the owner's unique ID (must be >= 0)
+     * @param firstName the owner's first name (required)
+     * @param lastName  the owner's last name (required)
+     * @param age       the owner's age (required)
+     * @param address   the owner's address (required)
+     * @param phone     the owner's phone number (required)
+     * @param email     the owner's email address (required)
+     * @throws IllegalArgumentException if any required field is null, blank, or invalid
+     */
     @JsonCreator
     public Owner(@JsonProperty("id") int id,
                @JsonProperty("firstName") String firstName,

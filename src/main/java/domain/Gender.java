@@ -1,5 +1,9 @@
 package domain;
 
+/** Represents the biological sex of a cat. */
 public enum Gender {
-    MALE, FEMALE
+    /** Male cat. */
+    MALE,
+    /** Female cat. */
+    FEMALE
 }
