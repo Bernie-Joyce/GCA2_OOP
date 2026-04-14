@@ -13,7 +13,6 @@ import domain.Cat;
  *    <li>The updated cat data with new attribute values</li>
  *  </ul>
  *  </p>
- * <p>
  *  @see RequestRouter
  *  @see domain.Cat
  *
