@@ -10,15 +10,24 @@ import protocol.Response;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Console menu for managing owners.
+ * Handles user input and delegates requests to the server via {@link Client}.
+ */
 public class OwnerMenu {
     private final Scanner scanner = new Scanner(System.in);
     private Client client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Creates a OwnerMenu with the given client.
+     * @param client the connected client used to send requests
+     */
     OwnerMenu(Client client) {
         this.client = client;
     }
 
+    /** Displays the owner menu and handles user input in a loop until exit. */
     public void run() {
         boolean check = true;
         while(check) {

@@ -2,9 +2,17 @@ package client;
 
 import java.util.Scanner;
 
+/**
+ * Entry point for the client application.
+ * Displays the main menu and delegates to sub-menus for cats, owners, and nutrition.
+ */
 public class ClientMain {
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Starts the client application and connects to the server on localhost:9000.
+     * @throws Exception if the server connection fails or a request errors
+     */
     void main() throws Exception {
         try (Client client = new Client("localhost", 9000)) {
             boolean loopCheck = true;

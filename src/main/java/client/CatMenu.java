@@ -12,13 +12,22 @@ import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.Scanner;
 
+/**
+ * Console menu for managing cats.
+ * Handles user input and delegates requests to the server via {@link Client}.
+ */
 public class CatMenu {
     private final Scanner scanner = new Scanner(System.in);
     private Client client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Creates a CatMenu with the given client.
+     * @param client the connected client used to send requests
+     */
     CatMenu(Client client){this.client = client;}
 
+    /** Displays the cat menu and handles user input in a loop until exit. */
     public void run(){
         boolean check = true;
         while(check) {

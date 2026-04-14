@@ -14,17 +14,25 @@ import domain.Owner;
 import protocol.RequestType;
 import protocol.Response;
 
-
+/**
+ * Console menu for managing nutrition.
+ * Handles user input and delegates requests to the server via {@link Client}.
+ */
 public class NutritionMenu {
 
     private final Scanner scanner = new Scanner(System.in);
     private Client client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Creates a NutritionMenu with the given client.
+     * @param client the connected client used to send requests
+     */
     NutritionMenu(Client client) {
         this.client = client;
     }
 
+    /** Displays the nutrition menu and handles user input in a loop until exit. */
     public void run() {
         boolean check = true;
         while (check) {
@@ -50,6 +58,7 @@ public class NutritionMenu {
             }
         }
     }
+
 
     public void handleGetAll() {
         try {
