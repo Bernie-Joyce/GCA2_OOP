@@ -11,6 +11,21 @@ import domain.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Central routing component responsible for mapping {@link RequestType}
+ * values to their corresponding {@link RequestHandler} implementations.
+ *
+ * <p>This class acts as the main dispatching layer of the server. It receives
+ * incoming {@link Request} objects, identifies their type, and delegates them
+ * to the appropriate handler, which interacts with the service layer and
+ * returns a {@link Response}.</p>
+ *
+ * <p>Each handler is registered in a lookup table during construction and is
+ * responsible for executing a specific business operation (e.g. CRUD operations
+ * for owners, cats, and nutrition records).</p>
+ *
+ * <p>JSON conversion is handled internally using Jackson's {@link ObjectMapper}.</p>
+ */
 public class RequestRouter {
     private final Map<RequestType, RequestHandler> handlers = new HashMap<>();
 
@@ -201,6 +216,15 @@ public class RequestRouter {
         });
     }
 
+    /**
+     * Processes an incoming {@link Request} by delegating it to the appropriate handler.
+     *
+     * <p>The request type is extracted, matched against the registered handlers,
+     * and executed. If no handler exists, an error response is returned.</p>
+     *
+     * @param request the incoming client request
+     * @return the {@link Response} produced by the corresponding handler
+     */
     public Response<?> handleRequest(Request request) {
         RequestType requestType = RequestType.valueOf(request.getType());
         RequestHandler handler = handlers.get(requestType);
@@ -224,6 +248,12 @@ public class RequestRouter {
         }
     }
 
+    /**
+     * Validates a {@link Cat} object and returns an error message if invalid.
+     *
+     * @param cat the cat to validate
+     * @return a validation error message, or {@code null} if valid
+     */
     private String getValidationErrorCat(Cat cat) {
         if (cat.getName() == null || cat.getName().isBlank()) return "Cat name is required";
         if (cat.getGender() == null) return "Cat gender is required";
