@@ -52,6 +52,21 @@ public class Cat {
         return identifyingMarkings;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getContent_type() {
+        return content_type;
+    }
+
+    public int getFile_size() {
+        return file_size;
+    }
+
+    public byte[] getCat_image() {
+        return cat_image;
+    }
 
     @JsonCreator
     public Cat(@JsonProperty("id") int id,
