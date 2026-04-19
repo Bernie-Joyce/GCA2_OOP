@@ -68,60 +68,76 @@ public class Cat {
         return cat_image;
     }
 
-    @JsonCreator
-    public Cat(@JsonProperty("id") int id,
-               @JsonProperty("ownerId") int ownerId,
-               @JsonProperty("name") String name,
-               @JsonProperty("gender") Gender gender,
-               @JsonProperty("breed") String breed,
-               @JsonProperty("dateOfBirth") Date dateOfBirth,
-               @JsonProperty("colour") String colour,
-               @JsonProperty("identifyingMarkings") String identifyingMarkings)
-    {
-        if (id < 0) {
-            throw new IllegalArgumentException("id cant be below 0");
-        }
-        if (ownerId < 0) {
-            throw new IllegalArgumentException("owner id cant be below 0");
-        }
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name is required");
-        }
-        if (gender == null) {
-            throw new IllegalArgumentException("Gender is required");
-        }
-        if (breed == null || breed.isBlank()) {
-            throw new IllegalArgumentException("Breed is required");
-        }
-        if (dateOfBirth == null) {
-            throw new IllegalArgumentException("Date of Birth is required");
-        }
-        if (colour == null || colour.isBlank()) {
-            throw new IllegalArgumentException("Colour is required");
-        }
-        if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
-            throw new IllegalArgumentException("Identifying markings is required");
-        }
-
-        this.id = id;
-        this.ownerId = ownerId;
-        this.name = name;
-        this.gender = gender;
-        this.breed = breed;
-        this.dateOfBirth = dateOfBirth;
-        this.colour = colour;
-        this.identifyingMarkings = identifyingMarkings;
+    public void setFileName(String fileName) {
+        this.fileName = (fileName == null) ? "" : fileName.trim();
     }
 
-    @Override
-    public String toString() {
-        return "Cat{id=" + id +
-                ", ownerId=" + ownerId +
-                ", name=" + name +
-                ", gender=" + gender +
-                ", breed=" + breed +
-                ", dateOfBirth=" + dateOfBirth +
-                ", colour=" + colour +
-                ", identifyingMarkings=" + identifyingMarkings;
+    public void setContentType(String content_type) {
+        this.content_type = (content_type == null) ? "" : content_type.trim();
     }
+
+    public void setFileSize(int file_size) {
+        this.file_size = Math.max(0, file_size);
+    }
+
+    public void setCat_image(byte[] data) {
+        cat_image = data;
+    }
+
+
+@JsonCreator
+public Cat(@JsonProperty("id") int id,
+           @JsonProperty("ownerId") int ownerId,
+           @JsonProperty("name") String name,
+           @JsonProperty("gender") Gender gender,
+           @JsonProperty("breed") String breed,
+           @JsonProperty("dateOfBirth") Date dateOfBirth,
+           @JsonProperty("colour") String colour,
+           @JsonProperty("identifyingMarkings") String identifyingMarkings) {
+    if (id < 0) {
+        throw new IllegalArgumentException("id cant be below 0");
+    }
+    if (ownerId < 0) {
+        throw new IllegalArgumentException("owner id cant be below 0");
+    }
+    if (name == null || name.isBlank()) {
+        throw new IllegalArgumentException("Name is required");
+    }
+    if (gender == null) {
+        throw new IllegalArgumentException("Gender is required");
+    }
+    if (breed == null || breed.isBlank()) {
+        throw new IllegalArgumentException("Breed is required");
+    }
+    if (dateOfBirth == null) {
+        throw new IllegalArgumentException("Date of Birth is required");
+    }
+    if (colour == null || colour.isBlank()) {
+        throw new IllegalArgumentException("Colour is required");
+    }
+    if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
+        throw new IllegalArgumentException("Identifying markings is required");
+    }
+
+    this.id = id;
+    this.ownerId = ownerId;
+    this.name = name;
+    this.gender = gender;
+    this.breed = breed;
+    this.dateOfBirth = dateOfBirth;
+    this.colour = colour;
+    this.identifyingMarkings = identifyingMarkings;
+}
+
+@Override
+public String toString() {
+    return "Cat{id=" + id +
+            ", ownerId=" + ownerId +
+            ", name=" + name +
+            ", gender=" + gender +
+            ", breed=" + breed +
+            ", dateOfBirth=" + dateOfBirth +
+            ", colour=" + colour +
+            ", identifyingMarkings=" + identifyingMarkings;
+}
 }
