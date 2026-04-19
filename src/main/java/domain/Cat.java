@@ -14,6 +14,10 @@ public class Cat {
     private Date dateOfBirth;
     private String colour;
     private String identifyingMarkings;
+    private String fileName;
+    private String content_type;
+    private int file_size;
+    private byte[] cat_image;
 
 
     public int getId() {
