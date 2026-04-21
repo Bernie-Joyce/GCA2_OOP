@@ -48,6 +48,22 @@ public class Owner {
         return email;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public int getFileSize() {
+        return fileSize;
+    }
+
+    public byte[] getOwnerImage() {
+        return ownerImage;
+    }
+
     @JsonCreator
     public Owner(@JsonProperty("id") int id,
                 @JsonProperty("firstName") String firstName,
