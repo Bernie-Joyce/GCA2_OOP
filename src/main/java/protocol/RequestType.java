@@ -10,6 +10,7 @@ public enum RequestType {
     DELETE_OWNER,
     FILTER_OWNERS,
     UPLOAD_OWNER_IMAGE,
+    GET_OWNER_IMAGE,
 
     // Cat service
     GET_ALL_CATS,

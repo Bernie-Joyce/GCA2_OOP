@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import service.*;
 import protocol.*;
 import domain.*;
@@ -212,6 +213,25 @@ public class RequestRouter {
                 return Response.success("Image uploaded for owner id: " + payload.getId(), updated, ErrorType.SUCCESS);
             } catch (Exception e) {
                 return Response.failure("Upload failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
+        });
+
+        handlers.put(RequestType.GET_OWNER_IMAGE, req -> {
+            try {
+                int id = req.getPayload().asInt();
+                Owner owner = ownerService.getOwnerImage(id);
+                String base64 = Base64.getEncoder().encodeToString(owner.getOwnerImage());
+
+                ObjectNode result = MAPPER.createObjectNode();
+                result.put("id", owner.getId());
+                result.put("fileName", owner.getFileName());
+                result.put("contentType", owner.getContentType());
+                result.put("fileSize", owner.getFileSize());
+                result.put("imageData", base64);
+
+                return Response.success("Image retrieved for owner id: " + id, result, ErrorType.SUCCESS);
+            } catch(Exception e) {
+                return Response.failure("Retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
             }
         });
     }

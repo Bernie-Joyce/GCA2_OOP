@@ -69,5 +69,9 @@ public class OwnerService implements Service {
     public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
         return dao.uploadImage(id, image, fileName, contentType, fileSize);
     }
+
+    public Owner getOwnerImage(int id) throws Exception{
+        return dao.getOwnerImage(id);
+    }
     
 }
