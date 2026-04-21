@@ -180,7 +180,7 @@ public class JdbcOwnerDao implements OwnerDao {
 
     @Override
     public Owner getOwnerImage(int id) throws Exception {
-        String sql = "SELECT OwnerImage, FileName, ContentType, FileSize FROM owners WHERE ID = ?";
+        String sql = "SELECT * FROM owners WHERE ID = ?";
 
         try (Connection c = open(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setInt(1, id);
