@@ -1,15 +1,12 @@
 package server;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import service.*;
 import protocol.*;
 import domain.*;
-
-import java.util.List;
-import java.util.Optional;
 
 public class RequestRouter {
     private final Map<RequestType, RequestHandler> handlers = new HashMap<>();
@@ -198,6 +195,24 @@ public class RequestRouter {
                 return Response.success("No values to Display", null, ErrorType.SUCCESS);
             }
             return Response.success("Filtered List: ", list, ErrorType.SUCCESS);
+        });
+
+        handlers.put(RequestType.UPLOAD_OWNER_IMAGE, req -> {
+            try {
+                FileUploadPayload payload = MAPPER.treeToValue(req.getPayload(), FileUploadPayload.class);
+                byte[] imageBytes = Base64.getDecoder().decode(payload.getImageData());
+
+                Owner updated = ownerService.uploadImage(
+                        payload.getId(),
+                        imageBytes,
+                        payload.getFileName(),
+                        payload.getContentType(),
+                        payload.getFileSize()
+                );
+                return Response.success("Image uploaded for owner id: " + payload.getId(), updated, ErrorType.SUCCESS);
+            } catch (Exception e) {
+                return Response.failure("Upload failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
         });
     }
 

@@ -65,5 +65,9 @@ public class OwnerService implements Service {
         return JSON_MAPPER.readValue(json, new TypeReference<List<Owner>>() {
         });
     }
+
+    public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
+        return dao.uploadImage(id, image, fileName, contentType, fileSize);
+    }
     
 }
