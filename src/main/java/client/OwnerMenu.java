@@ -151,7 +151,7 @@ public class OwnerMenu {
         String phone = scanner.nextLine().trim();
         System.out.print("Email: ");
         String email = scanner.nextLine().trim();
-        return new Owner(id, firstName, lastName, age, address, phone, email);
+        return new Owner(id, firstName, lastName, age, address, phone, email, null, null, 0, null);
     }
 
     private void handleImageUpload() {
