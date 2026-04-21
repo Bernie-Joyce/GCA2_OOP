@@ -10,6 +10,10 @@ CREATE TABLE `owners` (
   `Address` varchar(50) NOT NULL,
   `Phone` varchar(12) NOT NULL,
   `Email` varchar(30) NOT NULL,
+  `FileName` varchar(50),
+  `ContentType` varchar(50),
+  `FileSize` int(20),
+  `OwnerImage` MEDIUMBLOB,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 

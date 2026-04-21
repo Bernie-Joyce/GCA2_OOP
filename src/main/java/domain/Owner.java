@@ -11,9 +11,13 @@ public class Owner {
     private final String address;
     private final String phone;
     private final String email;
+    private final String fileName;
+    private final String contentType;
+    private final int fileSize;
+    private final byte[] ownerImage;
 
     public Owner(String firstName, String lastName, int age, String address, String phone, String email) {
-        this(0, firstName, lastName, age, address, phone, email);
+        this(0, firstName, lastName, age, address, phone, email, null, null, 0, null);
     }
 
     public int getId() {
@@ -46,12 +50,16 @@ public class Owner {
 
     @JsonCreator
     public Owner(@JsonProperty("id") int id,
-               @JsonProperty("firstName") String firstName,
-               @JsonProperty("lastName") String lastName,
-               @JsonProperty("age") int age,
-               @JsonProperty("address") String address,
-               @JsonProperty("phone") String phone,
-               @JsonProperty("email") String email)
+                @JsonProperty("firstName") String firstName,
+                @JsonProperty("lastName") String lastName,
+                @JsonProperty("age") int age,
+                @JsonProperty("address") String address,
+                @JsonProperty("phone") String phone,
+                @JsonProperty("email") String email,
+                @JsonProperty("fileName") String fileName,
+                @JsonProperty("contentType") String contentType,
+                @JsonProperty("fileSize") int fileSize,
+                @JsonProperty("ownerImage") byte[] ownerImage)
     {
         if (id < 0) {
             throw new IllegalArgumentException("ID cant be below 0");
@@ -82,6 +90,10 @@ public class Owner {
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.fileSize = fileSize;
+        this.ownerImage = ownerImage;
     }
 
     @Override
