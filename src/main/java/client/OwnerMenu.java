@@ -33,6 +33,7 @@ public class OwnerMenu {
             System.out.println("4. Update owner");
             System.out.println("5. Delete owner");
             System.out.println("6. Upload image");
+            System.out.println("7. Download image");
             System.out.println("0. Exit");
             System.out.print("Choice: ");
 
@@ -43,6 +44,7 @@ public class OwnerMenu {
                 case "4" -> handleUpdate();
                 case "5" -> handleDelete();
                 case "6" -> handleImageUpload();
+                case "7" -> handleDownloadImage();
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
@@ -182,5 +184,33 @@ public class OwnerMenu {
         String detectedMime = Files.probeContentType(filePath);
         String mime = (detectedMime != null) ? detectedMime : "application/octet-stream";
         return new FileUploadPayload(id, name, mime, bytes.length, b64);
+    }
+
+    public void handleDownloadImage() {
+        try {
+            System.out.print("Owner ID: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.print("Save to folder (e.g. C:/downloads/): ");
+            String savePath = scanner.nextLine().trim();
+
+            Response<JsonNode> res = client.send(RequestType.GET_OWNER_IMAGE, id);
+
+            if (res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            }
+
+            JsonNode data = res.getData();
+            String fileName = data.get("fileName").asText();
+            String base64 = data.get("imageData").asText();
+            byte[] imageBytes = Base64.getDecoder().decode(base64);
+
+            Path outPath = Path.of(savePath, fileName);
+            Files.write(outPath, imageBytes);
+
+            System.out.println("File saved at: " + outPath);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }
