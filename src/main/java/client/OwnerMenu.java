@@ -34,6 +34,7 @@ public class OwnerMenu {
             System.out.println("5. Delete owner");
             System.out.println("6. Upload image");
             System.out.println("7. Download image");
+            System.out.println("8. Get image metadata");
             System.out.println("0. Exit");
             System.out.print("Choice: ");
 
@@ -45,6 +46,7 @@ public class OwnerMenu {
                 case "5" -> handleDelete();
                 case "6" -> handleImageUpload();
                 case "7" -> handleDownloadImage();
+                case "8" -> handleGetMetadata();
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
@@ -209,6 +211,24 @@ public class OwnerMenu {
             Files.write(outPath, imageBytes);
 
             System.out.println("File saved at: " + outPath);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void handleGetMetadata() {
+        try {
+            System.out.print("Owner ID: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            Response<JsonNode> res = client.send(RequestType.GET_OWNER_METADATA, id);
+
+            if(res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            }
+
+            System.out.println(res.getData().toPrettyString());
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
