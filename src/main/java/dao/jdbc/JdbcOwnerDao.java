@@ -34,7 +34,10 @@ public class JdbcOwnerDao implements OwnerDao {
                 rs.getString("Address"),
                 rs.getString("Phone"),
                 rs.getString("Email"),
-                null, null, 0, null);
+                rs.getString("FileName"),
+                rs.getString("ContentType"),
+                rs.getInt("FileSize"),
+                null);
     }
 
     @Override
@@ -187,6 +190,24 @@ public class JdbcOwnerDao implements OwnerDao {
                     throw new IllegalArgumentException("Owner not found with ID: " + id);
                 }
                 return mapRowImage(rs);
+            }
+        }
+    }
+
+    @Override
+    public Owner getOwnerMetadata(int id) throws Exception {
+        String sql = "SELECT ID, FirstName, LastName, Age, Address, Phone, Email, FileName, ContentType, FileSize FROM owners WHERE ID = ?";
+
+        try (Connection c = open();
+            PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new IllegalArgumentException("Owner not found with id: " + id);
+                }
+                return mapRow(rs);
             }
         }
     }

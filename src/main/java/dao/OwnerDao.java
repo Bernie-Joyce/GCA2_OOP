@@ -15,4 +15,5 @@ public interface OwnerDao {
     List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception;
     Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception;
     Owner getOwnerImage(int id) throws Exception;
+    Owner getOwnerMetadata(int id) throws Exception;
 }
