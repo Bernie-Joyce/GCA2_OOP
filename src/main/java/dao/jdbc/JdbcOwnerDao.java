@@ -157,7 +157,7 @@ public class JdbcOwnerDao implements OwnerDao {
 
     @Override
     public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
-        String sql = "UPDATE owner SET OwnerImage = ?, FileName = ?, ContentType = ?, FileSize = ? WHERE ID = ?";
+        String sql = "UPDATE owners SET OwnerImage = ?, FileName = ?, ContentType = ?, FileSize = ? WHERE ID = ?";
         try (Connection c = open();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setBytes(1, image);
