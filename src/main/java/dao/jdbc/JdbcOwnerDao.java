@@ -33,7 +33,8 @@ public class JdbcOwnerDao implements OwnerDao {
                 rs.getInt("Age"),
                 rs.getString("Address"),
                 rs.getString("Phone"),
-                rs.getString("Email"));
+                rs.getString("Email"),
+                null, null, 0, null);
     }
 
     @Override
@@ -64,7 +65,8 @@ public class JdbcOwnerDao implements OwnerDao {
                         owner.getAge(),
                         owner.getAddress(),
                         owner.getPhone(),
-                        owner.getEmail());
+                        owner.getEmail(),
+                        null, null, 0, null);
             }
         }
     }
@@ -138,7 +140,8 @@ public class JdbcOwnerDao implements OwnerDao {
             if (rows != 1)
                 throw new IllegalArgumentException("Update failed for id: " + id);
 
-            return new Owner(id, owner.getFirstName(),owner.getLastName(),owner.getAge(),owner.getAddress(),owner.getPhone(),owner.getEmail());
+            return new Owner(id, owner.getFirstName(), owner.getLastName(), owner.getAge(), owner.getAddress(),
+                            owner.getPhone(), owner.getEmail(), null, null, 0, null);
         }
     }
 
