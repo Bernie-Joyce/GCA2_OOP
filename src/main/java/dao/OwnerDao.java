@@ -13,5 +13,5 @@ public interface OwnerDao {
     boolean deleteById(int id) throws Exception;
     Owner updateOwner(int id, Owner owner) throws Exception;
     List<Owner> findOwnersByFilter(Predicate<Owner> filter) throws Exception;
-
+    Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception;
 }

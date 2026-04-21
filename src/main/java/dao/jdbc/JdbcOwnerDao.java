@@ -154,4 +154,24 @@ public class JdbcOwnerDao implements OwnerDao {
                 result.add(owner);
         return result;
     }
+
+    @Override
+    public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
+        String sql = "UPDATE owner SET OwnerImage = ?, FileName = ?, ContentType = ?, FileSize = ? WHERE ID = ?";
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setBytes(1, image);
+            ps.setString(2, fileName);
+            ps.setString(3, contentType);
+            ps.setInt(4, fileSize);
+            ps.setInt(5, id);
+
+            int rows = ps.executeUpdate();
+            if (rows != 1) {
+                throw new IllegalArgumentException("Upload failed for owner id: " + id);
+            }
+
+            return findOwnerById(id).orElseThrow(() -> new Exception("Owner not found after upload"));
+        }
+    }
 }
