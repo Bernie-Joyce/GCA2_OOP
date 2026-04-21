@@ -3,12 +3,16 @@ package client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import domain.FileUploadPayload;
 import domain.Owner;
 import protocol.RequestType;
 import protocol.Response;
 
-import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.io.IOException;
+import java.util.Base64;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class OwnerMenu {
     private final Scanner scanner = new Scanner(System.in);
@@ -28,6 +32,7 @@ public class OwnerMenu {
             System.out.println("3. Add owner");
             System.out.println("4. Update owner");
             System.out.println("5. Delete owner");
+            System.out.println("6. Upload image");
             System.out.println("0. Exit");
             System.out.print("Choice: ");
 
@@ -37,6 +42,7 @@ public class OwnerMenu {
                 case "3" -> handleAdd();
                 case "4" -> handleUpdate();
                 case "5" -> handleDelete();
+                case "6" -> handleImageUpload();
                 case "0" -> check = false;
                 default -> System.out.println("Invalid option");
             }
@@ -148,4 +154,33 @@ public class OwnerMenu {
         return new Owner(id, firstName, lastName, age, address, phone, email);
     }
 
+    private void handleImageUpload() {
+        try {
+            System.out.print("Owner ID: ");
+            int id = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.print("File path (e.g. C:/images/photo.jpg): ");
+            String filePath = scanner.nextLine().trim();
+
+            FileUploadPayload payload = buildUploadPayload(Path.of(filePath), id);
+            Response<JsonNode> res = client.send(RequestType.UPLOAD_OWNER_IMAGE, payload);
+
+            if (res.getStatus().matches("ERROR")) {
+                throw new Exception(res.getMessage());
+            } else {
+                System.out.println(res.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private FileUploadPayload buildUploadPayload(Path filePath, int id) throws IOException {
+        byte[] bytes = Files.readAllBytes(filePath);
+        String b64 = Base64.getEncoder().encodeToString(bytes);
+        String name = filePath.getFileName().toString();
+        String detectedMime = Files.probeContentType(filePath);
+        String mime = (detectedMime != null) ? detectedMime : "application/octet-stream";
+        return new FileUploadPayload(id, name, mime, bytes.length, b64);
+    }
 }
