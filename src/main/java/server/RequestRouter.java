@@ -234,6 +234,23 @@ public class RequestRouter {
                 return Response.failure("Retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
             }
         });
+
+        handlers.put(RequestType.GET_OWNER_METADATA, req -> {
+            try {
+                int id = req.getPayload().asInt();
+                Owner owner = ownerService.getOwnerMetadata(id);
+
+                ObjectNode result = MAPPER.createObjectNode();
+                result.put("id", owner.getId());
+                result.put("fileName", owner.getFileName());
+                result.put("contentType", owner.getContentType());
+                result.put("fileSize", owner.getFileSize());
+
+                return Response.success("Metadata retrieved for owner: " + id, result, ErrorType.SUCCESS);
+            } catch (Exception e) {
+                return Response.failure("Metadata retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
+        });
     }
 
     public Response<?> handleRequest(Request request) {

@@ -11,6 +11,7 @@ public enum RequestType {
     FILTER_OWNERS,
     UPLOAD_OWNER_IMAGE,
     GET_OWNER_IMAGE,
+    GET_OWNER_METADATA,
 
     // Cat service
     GET_ALL_CATS,

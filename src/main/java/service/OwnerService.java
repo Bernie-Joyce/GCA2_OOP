@@ -70,8 +70,12 @@ public class OwnerService implements Service {
         return dao.uploadImage(id, image, fileName, contentType, fileSize);
     }
 
-    public Owner getOwnerImage(int id) throws Exception{
+    public Owner getOwnerImage(int id) throws Exception {
         return dao.getOwnerImage(id);
+    }
+
+    public Owner getOwnerMetadata(int id) throws Exception {
+        return dao.getOwnerMetadata(id);
     }
     
 }
