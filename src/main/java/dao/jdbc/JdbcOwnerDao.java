@@ -174,4 +174,36 @@ public class JdbcOwnerDao implements OwnerDao {
             return findOwnerById(id).orElseThrow(() -> new Exception("Owner not found after upload"));
         }
     }
+
+    @Override
+    public Owner getOwnerImage(int id) throws Exception {
+        String sql = "SELECT OwnerImage, FileName, ContentType, FileSize FROM owners WHERE ID = ?";
+
+        try (Connection c = open(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if(!rs.next()) {
+                    throw new IllegalArgumentException("Owner not found with ID: " + id);
+                }
+                return mapRowImage(rs);
+            }
+        }
+    }
+
+    private static Owner mapRowImage(ResultSet rs) throws SQLException {
+        return new Owner(
+                rs.getInt("ID"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getInt("Age"),
+                rs.getString("Address"),
+                rs.getString("Phone"),
+                rs.getString("Email"),
+                rs.getString("FileName"),
+                rs.getString("ContentType"),
+                rs.getInt("FileSize"),
+                rs.getBytes("OwnerImage")
+        );
+    }
 }
