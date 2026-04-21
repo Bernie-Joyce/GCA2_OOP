@@ -251,6 +251,10 @@ public class RequestRouter {
                 return Response.failure("Metadata retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
             }
         });
+
+        handlers.put(RequestType.DISCONNECT, req -> {
+            return Response.success("Client disconnected", null, ErrorType.SUCCESS);
+        });
     }
 
     public Response<?> handleRequest(Request request) {

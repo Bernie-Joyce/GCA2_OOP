@@ -76,6 +76,11 @@ public class server {
                 while ((line = in.readLine()) != null) {
 
                     Request req = MAPPER.readValue(line, Request.class);
+                    if (req.getType().equals("DISCONNECT")) {
+                        System.out.println("Client disconnected cleanly from " + socket.getInetAddress());
+                        out.println(MAPPER.writeValueAsString(Response.success("Goodbye", null, ErrorType.SUCCESS)));
+                        break;
+                    }
 //                  System.out.println("ECHO: " + line);
                     ServiceFactory fact = new ServiceFactory();
                     OwnerService ownerService =  fact.createOwnerService();

@@ -32,6 +32,9 @@ public class Client implements AutoCloseable {
 
     @Override
     public void close() throws IOException {
+        try {
+            send(RequestType.DISCONNECT, null);
+        } catch (Exception ignored) {}
         socket.close();
     }
 }
