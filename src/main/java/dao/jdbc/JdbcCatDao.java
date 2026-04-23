@@ -44,7 +44,7 @@ public class JdbcCatDao implements CatDao {
                 .colour(rs.getString("Color"))
                 .identifyingMarkings(rs.getString("IdentifyingMarkings"))
                 .fileName(rs.getString("file_name"))
-                .contentType(rs.getString("contentType"))
+                .contentType(rs.getString("content_type"))
                 .fileSize(rs.getInt("file_size"))
                 .catImage(rs.getBytes("cat_image"))
                 .build();
@@ -53,7 +53,7 @@ public class JdbcCatDao implements CatDao {
     @Override
     public int insert(Cat cat) throws Exception {
 
-        String sql = "INSERT INTO cats(OwnerId,Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings,file_name, contentType, file_size, cat_image) VALUES (? , ? , ? , ? , ? , ? , ?, ? , ? , ? , ?)";
+        String sql = "INSERT INTO cats(OwnerId,Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings,file_name, content_type, file_size, cat_image) VALUES (? , ? , ? , ? , ? , ? , ?, ? , ? , ? , ?)";
 
         try (Connection c = open();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -126,11 +126,11 @@ public class JdbcCatDao implements CatDao {
 
     @Override
     public Cat update(int id, Cat cat) throws SQLException {
-        String sql = "UPDATE cats SET OwnerId = ?, Name = ?, Gender = ?, Breed = ?, DateOfBirth = ?, Color = ?, IdentifyingMarkings = ?, file_name = ?, contentType = ?, file_size = ?, cat_image = ? WHERE Id = ?";
+        String sql = "UPDATE cats SET OwnerId = ?, Name = ?, Gender = ?, Breed = ?, DateOfBirth = ?, Color = ?, IdentifyingMarkings = ?, file_name = ?, content_type = ?, file_size = ?, cat_image = ? WHERE Id = ?";
         try (Connection c = open();
              PreparedStatement ps = c.prepareStatement(sql)) {
             settingStatement(cat, ps);
-            ps.setInt(12,id);
+            ps.setInt(12, id);
 
             int rows = ps.executeUpdate();
             if (rows == 0) {
@@ -182,5 +182,39 @@ public class JdbcCatDao implements CatDao {
     public List<Cat> deSerialiseList(String json) throws JsonProcessingException {
         return JSON_MAPPER.readValue(json, new TypeReference<>() {
         });
+    }
+
+    @Override
+    public Optional<Cat> findCatWithoutBinaryData(int id) throws Exception {
+        if (id <= 0)
+            return Optional.empty();
+
+        String sql = "SELECT id, OwnerID, Name,Breed,DateOfBirth, Color, IdentifyingMarkings, file_name, content_type, file_size FROM cats WHERE id = ?";
+
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next())
+                    return Optional.empty();
+
+                return Optional.of(new Cat.Builder()
+                        .id(rs.getInt("id"))
+                        .ownerId(rs.getInt("OwnerId"))
+                        .name(rs.getString("Name"))
+                        .gender(domain.Gender.valueOf(rs.getString("Gender").toUpperCase()))
+                        .breed(rs.getString("Breed"))
+                        .dateOfBirth(rs.getDate("DateOfBirth"))
+                        .colour(rs.getString("Color"))
+                        .identifyingMarkings(rs.getString("IdentifyingMarkings"))
+                        .fileName(rs.getString("file_name"))
+                        .contentType(rs.getString("content_type"))
+                        .fileSize(rs.getInt("file_size"))
+                        .build()
+                );
+            }
+        }
     }
 }

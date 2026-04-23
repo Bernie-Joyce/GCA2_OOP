@@ -16,8 +16,9 @@ import service.ServiceFactory;
 public class server {
     private final int port;
 
+    private volatile boolean running = true;
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private ExecutorService pool;
+    private final ExecutorService pool;
 
     public server(int port){
         if (port < 1_024 || port > 65_535)
@@ -30,7 +31,7 @@ public class server {
         System.out.println("Server starting on port " + port);
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            while (true) {
+            while (running) {
                 Socket clientSocket = serverSocket.accept();    // block until a client arrives
                 System.out.println("Accepted: " + clientSocket.getInetAddress());
                 pool.submit(new ClientHandler(clientSocket)); // hand off to pool
@@ -57,7 +58,7 @@ public class server {
 
     private static class ClientHandler implements Runnable {
 
-        private Socket socket;
+        private final Socket socket;
 
         // Creates: a handler for the given socket
         public ClientHandler(Socket socket) {
