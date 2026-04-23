@@ -7,6 +7,10 @@ import domain.Cat;
 import domain.Gender;
 import protocol.RequestType;
 import protocol.Response;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
@@ -14,7 +18,7 @@ import java.util.Scanner;
 
 public class CatMenu {
     private final Scanner scanner = new Scanner(System.in);
-    private Client client;
+    private final Client client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     CatMenu(Client client){this.client = client;}
@@ -103,54 +107,87 @@ public class CatMenu {
         }
     }
     private Cat getCatDetails(int id) {
-        scanner.nextLine();
         IO.println("Owner Id:");
-        int OwnerId = scanner.nextInt();
+        int ownerId = scanner.nextInt();
+        scanner.nextLine();
+
         IO.print("Name: ");
         String name = scanner.nextLine().trim();
+
         Gender gender = findGender();
+
         IO.print("Breed: ");
         String breed = scanner.nextLine().trim();
-        IO.println("Date of birth: ");
-        Date date = findDate();
+
+        Date dateOfBirth = findDate();
+
         IO.print("Colour: ");
         String colour = scanner.nextLine().trim();
+
         IO.print("Identifying Markings: ");
-        String Identifying_Markings = scanner.nextLine().trim();
-        scanner.nextLine();
+        String markings = scanner.nextLine().trim();
 
-        
-        return new Cat(id, OwnerId,name, gender, breed, date, colour, Identifying_Markings);
-    }
-    private Gender findGender(){
-        IO.println("Gender: (1 for male, 2 for female)");
-        switch(scanner.nextInt()){
-            case 1 -> {
-                return Gender.MALE;
+        IO.print("Enter absolute path to cat image (e.g., C:/pics/cat.jpg): ");
+        String pathInput = scanner.nextLine().trim();
+
+        String fileName = "";
+        int fileSize = 0;
+        String contentType = "";
+        byte[] imageBytes = null;
+        if(!pathInput.isBlank()){
+            try{
+                Path path = Paths.get(pathInput);
+                if(Files.exists(path)){
+                    fileName = path.getFileName().toString();
+                    fileSize = (int) Files.size(path);
+                    contentType = Files.probeContentType(path);
+                    imageBytes = Files.readAllBytes(path);
+                    IO.println("Successfully loaded: " + fileName + " (" + fileSize + " bytes)");
+                }
+                else{
+                    IO.println("Warning: File not found. Proceeding without image.");
+                }
+            } catch (Exception e) {
+                IO.println("Error reading file");
             }
-            case 2 -> {
-                return Gender.FEMALE;
-            }
-            default -> findGender();
         }
-        return null;
-    }
-    private Date findDate(){
-        Date date = null;
-        boolean validDate = false;
 
-        while (!validDate) {
+        return new Cat.Builder()
+                .id(id)
+                .ownerId(ownerId)
+                .name(name)
+                .gender(gender)
+                .breed(breed)
+                .dateOfBirth(dateOfBirth)
+                .colour(colour)
+                .identifyingMarkings(markings)
+                .fileName(fileName)
+                .contentType(contentType)
+                .catImage(imageBytes)
+                .fileSize(fileSize)
+                .build();
+    }
+    private Gender findGender() {
+        while (true) {
+            IO.println("Gender: (1 for male, 2 for female)");
+            String input = scanner.nextLine().trim();
+            if (input.equals("1")) return Gender.MALE;
+            if (input.equals("2")) return Gender.FEMALE;
+            IO.println("Invalid choice. Please enter 1 or 2.");
+        }
+    }
+    private Date findDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        while (true) {
             try {
                 IO.println("Date of birth (dd/MM/yyyy): ");
                 String dateInput = scanner.nextLine().trim();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                date = (Date) dateFormat.parse(dateInput);
-                validDate = true;
-            }
-            catch(ParseException e){
-                findDate();
+                java.util.Date utilDate = dateFormat.parse(dateInput);
+                return new java.sql.Date(utilDate.getTime());
+            } catch (ParseException e) {
+                IO.println("Invalid format. Please use dd/MM/yyyy.");
             }
         }
-        return date;
     }
 }

@@ -1,23 +1,148 @@
 package domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.sql.Date;
 
+@JsonDeserialize(builder = Cat.Builder.class)
 public class Cat {
-    private int id;
-    private int ownerId;
-    private String name;
-    private Gender gender;
-    private String breed;
-    private Date dateOfBirth;
-    private String colour;
-    private String identifyingMarkings;
-    private String fileName;
-    private String content_type;
-    private int file_size;
-    private byte[] cat_image;
+    private final int id;
+    private final int ownerId;
+    private final String name;
+    private final Gender gender;
+    private final String breed;
+    private final Date dateOfBirth;
+    private final String colour;
+    private final String identifyingMarkings;
+    private final String fileName;
+    private final String contentType;
+    private final int fileSize;
+    private final byte[] catImage;
+
+    private Cat(Builder builder) {
+        this.id = builder.id;
+        this.ownerId = builder.ownerId;
+        this.name = builder.name;
+        this.gender = builder.gender;
+        this.breed = builder.breed;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.colour = builder.colour;
+        this.identifyingMarkings = builder.identifyingMarkings;
+        this.fileName = builder.fileName;
+        this.contentType = builder.contentType;
+        this.fileSize = builder.fileSize;
+        this.catImage = builder.catImage;
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private int id;
+        private int ownerId;
+        private String name;
+        private Gender gender;
+        private String breed;
+        private Date dateOfBirth;
+        private String colour;
+        private String identifyingMarkings;
+        private String fileName;
+        private String contentType;
+        private int fileSize;
+        private byte[] catImage;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder ownerId(int ownerId) {
+            this.ownerId = ownerId;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder gender(Gender gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Builder breed(String breed) {
+            this.breed = breed;
+            return this;
+        }
+
+        public Builder dateOfBirth(Date dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder colour(String colour) {
+            this.colour = colour;
+            return this;
+        }
+
+        public Builder identifyingMarkings(String identifyingMarkings) {
+            this.identifyingMarkings = identifyingMarkings;
+            return this;
+        }
+
+        @JsonProperty("fileName")
+        public Builder fileName(String fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+
+        @JsonProperty("contentType")
+        public Builder contentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
+        @JsonProperty("fileSize")
+        public Builder fileSize(int fileSize) {
+            this.fileSize = fileSize;
+            return this;
+        }
+
+        @JsonProperty("catImage")
+        public Builder catImage(byte[] catImage) {
+            this.catImage = catImage;
+            return this;
+        }
+
+        public Cat build() {
+            if (id < 0) {
+                throw new IllegalArgumentException("id cant be below 0");
+            }
+            if (ownerId < 0) {
+                throw new IllegalArgumentException("owner id cant be below 0");
+            }
+            if (name == null || name.isBlank()) {
+                throw new IllegalArgumentException("Name is required");
+            }
+            if (gender == null) {
+                throw new IllegalArgumentException("Gender is required");
+            }
+            if (breed == null || breed.isBlank()) {
+                throw new IllegalArgumentException("Breed is required");
+            }
+            if (dateOfBirth == null) {
+                throw new IllegalArgumentException("Date of Birth is required");
+            }
+            if (colour == null || colour.isBlank()) {
+                throw new IllegalArgumentException("Colour is required");
+            }
+            if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
+                throw new IllegalArgumentException("Identifying markings is required");
+            }
+            return new Cat(this);
+        }
+    }
 
 
     public int getId() {
@@ -56,88 +181,30 @@ public class Cat {
         return fileName;
     }
 
-    public String getContent_type() {
-        return content_type;
+    public String getContentType() {
+        return contentType;
     }
 
-    public int getFile_size() {
-        return file_size;
+    public int getFileSize() {
+        return fileSize;
     }
 
-    public byte[] getCat_image() {
-        return cat_image;
+    public byte[] getCatImage() {
+        return catImage;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = (fileName == null) ? "" : fileName.trim();
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "id=" + id +
+                ", ownerId=" + ownerId +
+                ", name='" + name + '\'' +
+                ", gender=" + gender +
+                ", breed='" + breed + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", colour='" + colour + '\'' +
+                ", identifyingMarkings='" + identifyingMarkings + '\'' +
+                ", fileName='" + fileName + '\'' +
+                '}';
     }
-
-    public void setContentType(String content_type) {
-        this.content_type = (content_type == null) ? "" : content_type.trim();
-    }
-
-    public void setFileSize(int file_size) {
-        this.file_size = Math.max(0, file_size);
-    }
-
-    public void setCat_image(byte[] data) {
-        cat_image = data;
-    }
-
-
-@JsonCreator
-public Cat(@JsonProperty("id") int id,
-           @JsonProperty("ownerId") int ownerId,
-           @JsonProperty("name") String name,
-           @JsonProperty("gender") Gender gender,
-           @JsonProperty("breed") String breed,
-           @JsonProperty("dateOfBirth") Date dateOfBirth,
-           @JsonProperty("colour") String colour,
-           @JsonProperty("identifyingMarkings") String identifyingMarkings) {
-    if (id < 0) {
-        throw new IllegalArgumentException("id cant be below 0");
-    }
-    if (ownerId < 0) {
-        throw new IllegalArgumentException("owner id cant be below 0");
-    }
-    if (name == null || name.isBlank()) {
-        throw new IllegalArgumentException("Name is required");
-    }
-    if (gender == null) {
-        throw new IllegalArgumentException("Gender is required");
-    }
-    if (breed == null || breed.isBlank()) {
-        throw new IllegalArgumentException("Breed is required");
-    }
-    if (dateOfBirth == null) {
-        throw new IllegalArgumentException("Date of Birth is required");
-    }
-    if (colour == null || colour.isBlank()) {
-        throw new IllegalArgumentException("Colour is required");
-    }
-    if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
-        throw new IllegalArgumentException("Identifying markings is required");
-    }
-
-    this.id = id;
-    this.ownerId = ownerId;
-    this.name = name;
-    this.gender = gender;
-    this.breed = breed;
-    this.dateOfBirth = dateOfBirth;
-    this.colour = colour;
-    this.identifyingMarkings = identifyingMarkings;
-}
-
-@Override
-public String toString() {
-    return "Cat{id=" + id +
-            ", ownerId=" + ownerId +
-            ", name=" + name +
-            ", gender=" + gender +
-            ", breed=" + breed +
-            ", dateOfBirth=" + dateOfBirth +
-            ", colour=" + colour +
-            ", identifyingMarkings=" + identifyingMarkings;
-}
 }
