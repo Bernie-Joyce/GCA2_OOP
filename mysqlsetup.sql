@@ -71,7 +71,7 @@ INSERT INTO `cats` (`Id`, `OwnerID`, `Name`, `Gender`, `Breed`, `DateOfBirth`, `
 
 INSERT INTO `nutrition` (`CatId`, `DailyCaloriesKcal`, `ProteinGrams`, `FatGrams`, `CarbGrams`, `WaterIntakeMl`, `MealsPerDay`, `FoodBrand`, `DietaryRestrictions`) VALUES
 (1, 350, 45.5, 18.3, 12.0, 250, 2, 'Royal Canin', 'Grain-free'),
-(2, 280, 38.2, 16.1, 10.5, 200, 2, 'Hill\'s Science Diet', 'Chicken only'),
+(2, 280, 38.2, 16.1, 10.5, 200, 2, 'Hill\'s Science Diet', 'Chicken only''),
 (3, 320, 42.0, 19.5, 11.0, 220, 2, 'Purina Pro Plan', 'None'),
 (4, 400, 48.0, 22.0, 14.0, 280, 3, 'Orijen', 'Low carb'),
 (5, 310, 41.5, 17.8, 13.5, 240, 2, 'Taste of the Wild', 'Grain-free'),
@@ -80,3 +80,10 @@ INSERT INTO `nutrition` (`CatId`, `DailyCaloriesKcal`, `ProteinGrams`, `FatGrams
 (8, 380, 46.0, 20.5, 15.0, 260, 3, 'Acana', 'High protein'),
 (9, 290, 39.0, 17.5, 11.0, 210, 2, 'Instinct Raw Boost', 'Sensitive stomach'),
 (10, 340, 44.5, 19.2, 13.8, 245, 2, 'Primal', 'Freeze-dried');
+
+
+ALTER TABLE cats
+ADD COLUMN file_name VARCHAR(255) NOT NULL DEFAULT '',
+ADD COLUMN content_type VARCHAR(100) NOT NULL DEFAULT '',
+ADD COLUMN file_size INT NOT NULL DEFAULT 0,
+ADD COLUMN cat_image MEDIUMBLOB;
