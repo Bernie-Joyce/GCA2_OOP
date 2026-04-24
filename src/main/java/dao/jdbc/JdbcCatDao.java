@@ -35,8 +35,8 @@ public class JdbcCatDao implements CatDao {
 
     private static Cat mapRow(ResultSet rs) throws SQLException {
         return new Cat.Builder()
-                .id(rs.getInt("id"))
-                .ownerId(rs.getInt("OwnerId"))
+                .id(rs.getInt("Id"))
+                .ownerId(rs.getInt("OwnerID"))
                 .name(rs.getString("Name"))
                 .gender(Gender.valueOf(rs.getString("Gender").toUpperCase()))
                 .breed(rs.getString("Breed"))
@@ -52,7 +52,7 @@ public class JdbcCatDao implements CatDao {
     private static Cat mapCatWithoutImage(ResultSet rs) throws SQLException {
         return new Cat.Builder()
                 .id(rs.getInt("id"))
-                .ownerId(rs.getInt("OwnerId"))
+                .ownerId(rs.getInt("OwnerID"))
                 .name(rs.getString("Name"))
                 .gender(Gender.valueOf(rs.getString("Gender").toUpperCase()))
                 .breed(rs.getString("Breed"))
@@ -194,39 +194,5 @@ public class JdbcCatDao implements CatDao {
     public List<Cat> deSerialiseList(String json) throws JsonProcessingException {
         return JSON_MAPPER.readValue(json, new TypeReference<>() {
         });
-    }
-
-    @Override
-    public Optional<Cat> findCatWithoutBinaryData(int id) throws Exception {
-        if (id <= 0)
-            return Optional.empty();
-
-        String sql = "SELECT id, OwnerID, Name,Breed,DateOfBirth, Color, IdentifyingMarkings, file_name, content_type, file_size FROM cats WHERE id = ?";
-
-        try (Connection c = open();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next())
-                    return Optional.empty();
-
-                return Optional.of(new Cat.Builder()
-                        .id(rs.getInt("id"))
-                        .ownerId(rs.getInt("OwnerId"))
-                        .name(rs.getString("Name"))
-                        .gender(domain.Gender.valueOf(rs.getString("Gender").toUpperCase()))
-                        .breed(rs.getString("Breed"))
-                        .dateOfBirth(rs.getDate("DateOfBirth"))
-                        .colour(rs.getString("Color"))
-                        .identifyingMarkings(rs.getString("IdentifyingMarkings"))
-                        .fileName(rs.getString("file_name"))
-                        .contentType(rs.getString("content_type"))
-                        .fileSize(rs.getInt("file_size"))
-                        .build()
-                );
-            }
-        }
     }
 }

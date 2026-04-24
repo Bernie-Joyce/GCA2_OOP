@@ -93,25 +93,25 @@ public class Cat {
             return this;
         }
 
-        @JsonProperty("fileName")
+        @JsonProperty("file_name")
         public Builder fileName(String fileName) {
             this.fileName = fileName;
             return this;
         }
 
-        @JsonProperty("contentType")
+        @JsonProperty("content_type")
         public Builder contentType(String contentType) {
             this.contentType = contentType;
             return this;
         }
 
-        @JsonProperty("fileSize")
+        @JsonProperty("file_size")
         public Builder fileSize(int fileSize) {
             this.fileSize = fileSize;
             return this;
         }
 
-        @JsonProperty("catImage")
+        @JsonProperty("cat_image")
         public Builder catImage(byte[] catImage) {
             this.catImage = catImage;
             return this;
@@ -179,18 +179,22 @@ public class Cat {
         return identifyingMarkings;
     }
 
+    @JsonProperty("file_name")
     public String getFileName() {
         return fileName;
     }
 
+    @JsonProperty("content_type")
     public String getContentType() {
         return contentType;
     }
 
+    @JsonProperty("file_size")
     public int getFileSize() {
         return fileSize;
     }
 
+    @JsonProperty("cat_image")
     public byte[] getCatImage() {
         return catImage;
     }

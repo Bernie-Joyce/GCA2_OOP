@@ -19,5 +19,4 @@ public interface CatDao {
     Cat deSerialise(String json) throws JsonProcessingException;
     String serialiseList(List<Cat> catList) throws JsonProcessingException;
     List<Cat> deSerialiseList(String jsonList) throws JsonProcessingException;
-    Optional<Cat> findCatWithoutBinaryData(int id) throws Exception;
 }
