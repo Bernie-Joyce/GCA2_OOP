@@ -1,11 +1,13 @@
 package domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.sql.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = Cat.Builder.class)
 public class Cat {
     private final int id;

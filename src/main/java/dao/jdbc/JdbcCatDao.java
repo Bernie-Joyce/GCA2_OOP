@@ -49,6 +49,18 @@ public class JdbcCatDao implements CatDao {
                 .catImage(rs.getBytes("cat_image"))
                 .build();
     }
+    private static Cat mapCatWithoutImage(ResultSet rs) throws SQLException {
+        return new Cat.Builder()
+                .id(rs.getInt("id"))
+                .ownerId(rs.getInt("OwnerId"))
+                .name(rs.getString("Name"))
+                .gender(Gender.valueOf(rs.getString("Gender").toUpperCase()))
+                .breed(rs.getString("Breed"))
+                .dateOfBirth(rs.getDate("DateOfBirth"))
+                .colour(rs.getString("Color"))
+                .identifyingMarkings(rs.getString("IdentifyingMarkings"))
+                .build();
+    }
 
     @Override
     public int insert(Cat cat) throws Exception {
@@ -96,7 +108,7 @@ public class JdbcCatDao implements CatDao {
     @Override
     public List<Cat> findAll() throws Exception {
 
-        String sql = "SELECT * FROM cats ORDER BY Id";
+        String sql = "SELECT Id,OwnerID,Name, Gender, Breed, DateOfBirth, Color, IdentifyingMarkings FROM cats order by Id";
 
         try (Connection c = open();
              PreparedStatement ps = c.prepareStatement(sql);
@@ -104,7 +116,7 @@ public class JdbcCatDao implements CatDao {
 
             ArrayList<Cat> out = new ArrayList<>();
             while (rs.next())
-                out.add(mapRow(rs));
+                out.add(mapCatWithoutImage(rs));
             return out;
         }
     }
