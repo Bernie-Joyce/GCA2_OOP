@@ -1,0 +1,38 @@
+package dao;
+
+import dao.jdbc.JdbcOwnerDao;
+import domain.Owner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class JdbcOwnerDaoTest {
+
+    private static final String URL = "jdbc:mysql://localhost:3306/catnowner_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    private static final String USER = "root";
+    private static final String PASS = "";
+
+    private JdbcOwnerDao _dao;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        _dao = new JdbcOwnerDao(URL, USER, PASS);
+        try (Connection c = DriverManager.getConnection(URL, USER, PASS)) {
+            c.createStatement().executeUpdate("DELETE FROM cats");
+            c.createStatement().executeUpdate("DELETE FROM owners");
+        }
+        _dao.insert(new Owner("John", "Doe", 30, "123 Main St", "0871234567", "john@example.com"));
+    }
+
+    @Test
+    void findOwnerById_returnsEmptyOptional_whenIdDoesNotExist() throws Exception {
+        Optional<Owner> result = _dao.findOwnerById(99999);
+        assertFalse(result.isPresent());
+    }
+}
