@@ -63,4 +63,10 @@ public class RequestRouterTest {
         assertEquals("OK", res.getStatus());
     }
 
+    @Test
+    void handleRequest_deleteOwner_returnsFailure_whenOwnerDoesNotExist() throws Exception {
+        Request req = new Request("DELETE_OWNER", MAPPER.valueToTree(99999));
+        Response<?> res = _router.handleRequest(req);
+        assertEquals("ERROR", res.getStatus());
+    }
 }
