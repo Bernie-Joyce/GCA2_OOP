@@ -14,6 +14,7 @@ import service.NutritionService;
 import service.OwnerService;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import domain.Owner;
 
 public class RequestRouterTest {
 
@@ -34,8 +35,8 @@ public class RequestRouterTest {
             c.createStatement().executeUpdate("DELETE FROM owners");
         }
 
-        OwnerService ownerService         = new OwnerService(_ownerDao);
-        CatService catService             = new CatService(new JdbcCatDao(URL, USER, PASS));
+        OwnerService ownerService = new OwnerService(_ownerDao);
+        CatService catService = new CatService(new JdbcCatDao(URL, USER, PASS));
         NutritionService nutritionService = new NutritionService(new JdbcNutritionDao(URL, USER, PASS));
         _router = new RequestRouter(ownerService, catService, nutritionService);
     }
@@ -52,6 +53,14 @@ public class RequestRouterTest {
         Request req = new Request("GET_OWNER_BY_ID", MAPPER.valueToTree(99999));
         Response<?> res = _router.handleRequest(req);
         assertEquals("ERROR", res.getStatus());
+    }
+
+    @Test
+    void handleRequest_createOwner_returnsSuccess() throws Exception {
+        Owner owner = new Owner("Jane", "Doe", 28, "1 Test St", "0871234567", "jane@example.com");
+        Request req = new Request("CREATE_OWNER", MAPPER.valueToTree(owner));
+        Response<?> res = _router.handleRequest(req);
+        assertEquals("OK", res.getStatus());
     }
 
 }
