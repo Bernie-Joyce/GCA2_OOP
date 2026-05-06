@@ -29,4 +29,15 @@ public class ResponseTest {
         assertEquals("", res.getMessage());
         assertNull(res.getData());
     }
+
+    @Test
+    void setters_updateFields_correctly() {
+        Response<String> res = new Response<>();
+        res.setStatus("OK");
+        res.setMessage("Updated");
+        res.setData("data");
+        assertEquals("OK", res.getStatus());
+        assertEquals("Updated", res.getMessage());
+        assertEquals("data", res.getData());
+    }
 }
