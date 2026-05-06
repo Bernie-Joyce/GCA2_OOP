@@ -22,4 +22,13 @@ public class RequestTest {
         assertNotNull(req.getPayload());
     }
 
+    @Test
+    void setters_updateTypeAndPayload_correctly() {
+        Request req = new Request();
+        req.setType("CREATE_OWNER");
+        req.setPayload(MAPPER.nullNode());
+        assertEquals("CREATE_OWNER", req.getType());
+        assertNotNull(req.getPayload());
+    }
+
 }
