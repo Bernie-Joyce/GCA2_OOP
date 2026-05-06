@@ -69,4 +69,11 @@ public class RequestRouterTest {
         Response<?> res = _router.handleRequest(req);
         assertEquals("ERROR", res.getStatus());
     }
+
+    @Test
+    void handleRequest_disconnect_returnsSuccess() throws Exception {
+        Request req = new Request("DISCONNECT", MAPPER.nullNode());
+        Response<?> res = _router.handleRequest(req);
+        assertEquals("OK", res.getStatus());
+    }
 }
