@@ -6,6 +6,7 @@ package service;
  * <p>Classes implementing this interface represent the business logic layer
  * of the application. It can be used for grouping, type safety, or future
  * extension (e.g., applying cross-cutting concerns like logging or transactions).</p>
+ * @author Michal Salabura
  */
 public interface Service {
 }

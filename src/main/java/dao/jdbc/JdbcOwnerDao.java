@@ -12,6 +12,7 @@ import java.util.function.Predicate;
 /**
  * JDBC implementation of {@link OwnerDao}.
  * Connects to a relational database to perform cat CRUD operations.
+ * @author Michal Salabura
  */
 public class JdbcOwnerDao implements OwnerDao {
     private final String _url;
@@ -20,6 +21,7 @@ public class JdbcOwnerDao implements OwnerDao {
 
     /**
      * Creates a new jdbcOwnerDao with the given database credentials.
+     * @author Michal Salabura
      * @param url  the JDBC connection URL
      * @param user the database username
      * @param pass the database password
@@ -44,7 +46,11 @@ public class JdbcOwnerDao implements OwnerDao {
                 rs.getInt("Age"),
                 rs.getString("Address"),
                 rs.getString("Phone"),
-                rs.getString("Email"));
+                rs.getString("Email"),
+                rs.getString("FileName"),
+                rs.getString("ContentType"),
+                rs.getInt("FileSize"),
+                null);
     }
 
     @Override
@@ -75,7 +81,8 @@ public class JdbcOwnerDao implements OwnerDao {
                         owner.getAge(),
                         owner.getAddress(),
                         owner.getPhone(),
-                        owner.getEmail());
+                        owner.getEmail(),
+                        null, null, 0, null);
             }
         }
     }
@@ -149,7 +156,8 @@ public class JdbcOwnerDao implements OwnerDao {
             if (rows != 1)
                 throw new IllegalArgumentException("Update failed for id: " + id);
 
-            return new Owner(id, owner.getFirstName(),owner.getLastName(),owner.getAge(),owner.getAddress(),owner.getPhone(),owner.getEmail());
+            return new Owner(id, owner.getFirstName(), owner.getLastName(), owner.getAge(), owner.getAddress(),
+                            owner.getPhone(), owner.getEmail(), null, null, 0, null);
         }
     }
 
@@ -161,5 +169,75 @@ public class JdbcOwnerDao implements OwnerDao {
             if (filter.test(owner))
                 result.add(owner);
         return result;
+    }
+
+    @Override
+    public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
+        String sql = "UPDATE owners SET OwnerImage = ?, FileName = ?, ContentType = ?, FileSize = ? WHERE ID = ?";
+        try (Connection c = open();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setBytes(1, image);
+            ps.setString(2, fileName);
+            ps.setString(3, contentType);
+            ps.setInt(4, fileSize);
+            ps.setInt(5, id);
+
+            int rows = ps.executeUpdate();
+            if (rows != 1) {
+                throw new IllegalArgumentException("Upload failed for owner id: " + id);
+            }
+
+            return findOwnerById(id).orElseThrow(() -> new Exception("Owner not found after upload"));
+        }
+    }
+
+    @Override
+    public Owner getOwnerImage(int id) throws Exception {
+        String sql = "SELECT * FROM owners WHERE ID = ?";
+
+        try (Connection c = open(); PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if(!rs.next()) {
+                    throw new IllegalArgumentException("Owner not found with ID: " + id);
+                }
+                return mapRowImage(rs);
+            }
+        }
+    }
+
+    @Override
+    public Owner getOwnerMetadata(int id) throws Exception {
+        String sql = "SELECT ID, FirstName, LastName, Age, Address, Phone, Email, FileName, ContentType, FileSize FROM owners WHERE ID = ?";
+
+        try (Connection c = open();
+            PreparedStatement ps = c.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) {
+                    throw new IllegalArgumentException("Owner not found with id: " + id);
+                }
+                return mapRow(rs);
+            }
+        }
+    }
+
+    private static Owner mapRowImage(ResultSet rs) throws SQLException {
+        return new Owner(
+                rs.getInt("ID"),
+                rs.getString("FirstName"),
+                rs.getString("LastName"),
+                rs.getInt("Age"),
+                rs.getString("Address"),
+                rs.getString("Phone"),
+                rs.getString("Email"),
+                rs.getString("FileName"),
+                rs.getString("ContentType"),
+                rs.getInt("FileSize"),
+                rs.getBytes("OwnerImage")
+        );
     }
 }

@@ -2,9 +2,7 @@ package dao;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import domain.Cat;
-import domain.Gender;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +11,12 @@ import java.util.function.Predicate;
 /**
  * Data Access Object for {@link Cat} entities.
  * Defines CRUD operations and JSON serialisation for cats.
+ * @author Bernard Joyce
  */
 public interface CatDao {
     /**
      * Inserts a new cat into the data store.
+     * @author Bernard Joyce
      * @param cat the cat to insert
      * @return the generated ID of the inserted cat
      * @throws Exception if the insert fails
@@ -25,6 +25,7 @@ public interface CatDao {
 
     /**
      * Updates an existing cat by ID.
+     * @author Bernard Joyce
      * @param id the ID of the cat to update
      * @param cat the cat object containing updated values
      * @return the updated {@link Cat}
@@ -34,6 +35,7 @@ public interface CatDao {
 
     /**
      * Finds a cat by its ID.
+     * @author Bernard Joyce
      * @param id the cat's ID
      * @return an {@link Optional} containing the cat if found, or empty if not
      * @throws Exception if the query fails
@@ -42,6 +44,7 @@ public interface CatDao {
 
     /**
      * Retrieves all cats from the data store.
+     * @author Bernard Joyce
      * @return a list of all {@link Cat} objects
      * @throws Exception if the query fails
      */
@@ -49,6 +52,7 @@ public interface CatDao {
 
     /**
      * Deletes a cat by its ID.
+     * @author Bernard Joyce
      * @param id the ID of the cat to delete
      * @return true if deleted successfully, false if not found
      * @throws Exception if the deletion fails
@@ -57,6 +61,7 @@ public interface CatDao {
 
     /**
      * Filters a list of cats using a given predicate.
+     * @author Bernard Joyce
      * @param cats the list to filter
      * @param keep the condition a cat must satisfy to be kept
      * @return a filtered list of {@link Cat} objects
@@ -65,6 +70,7 @@ public interface CatDao {
 
     /**
      * Serialises a cat to a JSON string.
+     * @author Bernard Joyce
      * @param cat the cat to serialise
      * @return JSON representation of the cat
      * @throws JsonProcessingException if serialisation fails
@@ -73,6 +79,7 @@ public interface CatDao {
 
     /**
      * Deserialises a JSON string into a cat object.
+     * @author Bernard Joyce
      * @param json the JSON string to parse
      * @return the deserialised {@link Cat}
      * @throws JsonProcessingException if deserialisation fails
@@ -81,6 +88,7 @@ public interface CatDao {
 
     /**
      * Serialises a list of cats to a JSON string.
+     * @author Bernard Joyce
      * @param catList the list to serialise
      * @return JSON representation of the list
      * @throws JsonProcessingException if serialisation fails
@@ -89,6 +97,7 @@ public interface CatDao {
 
     /**
      * Deserialises a JSON string into a list of cats.
+     * @author Bernard Joyce
      * @param jsonList the JSON string to parse
      * @return a list of deserialised {@link Cat} objects
      * @throws JsonProcessingException if deserialisation fails

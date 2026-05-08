@@ -7,6 +7,11 @@ import domain.Cat;
 import domain.Gender;
 import protocol.RequestType;
 import protocol.Response;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
@@ -15,22 +20,26 @@ import java.util.Scanner;
 /**
  * Console menu for managing cats.
  * Handles user input and delegates requests to the server via {@link Client}.
+ * @author Bernard Joyce
  */
 public class CatMenu {
     private final Scanner scanner = new Scanner(System.in);
-    private Client client;
+    private final Client client;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Creates a CatMenu with the given client.
+     * @author Bernard Joyce
      * @param client the connected client used to send requests
      */
-    CatMenu(Client client){this.client = client;}
+    CatMenu(Client client) {
+        this.client = client;
+    }
 
     /** Displays the cat menu and handles user input in a loop until exit. */
-    public void run(){
+    public void run() {
         boolean check = true;
-        while(check) {
+        while (check) {
             String message = """
                     === Cat Menu ===\s
                     1. Get all cats
@@ -42,19 +51,19 @@ public class CatMenu {
                     Choice:\s
                    \s""";
             IO.println(message);
-            switch(scanner.nextLine().trim()){
+            switch (scanner.nextLine().trim()) {
                 case "1" -> handleGetAll();
                 case "2" -> handleGetById();
                 case "3" -> handleAdd();
                 case "4" -> handleUpdate();
                 case "5" -> handleDelete();
                 case "0" -> check = false;
-                default -> IO.println("Invalid option");
+                default  -> IO.println("Invalid option");
             }
-
-
         }
     }
+
+    /** Retrieves and prints all cats from the server. */
     private void handleGetAll() {
         try {
             Response<JsonNode> res = client.send(RequestType.GET_ALL_CATS, null);
@@ -63,28 +72,58 @@ public class CatMenu {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    /**
+     * Retrieves a cat by ID and, if the cat has an image, writes it to disk.
+     */
     private void handleGetById() {
         try {
-            System.out.println("Cat ID: ");
+            System.out.print("Cat ID: ");
             int id = scanner.nextInt();
             scanner.nextLine();
+
             Response<JsonNode> res = client.send(RequestType.GET_CAT_BY_ID, id);
-            System.out.println(res.getData().toPrettyString());
+
+            if (res.getStatus().equals("OK") && res.getData() != null) {
+                Cat cat = MAPPER.treeToValue(res.getData(), Cat.class);
+                IO.println("\n--- Cat Details Found ---");
+                IO.println("Name: " + cat.getName());
+                IO.println("Size: " + cat.getFileSize() + " bytes");
+
+                if (cat.getCatImage() != null && cat.getCatImage().length > 0) {
+                    String name = (cat.getFileName() == null || cat.getFileName().isBlank())
+                            ? "downloaded_image.jpg"
+                            : "retrieved_" + cat.getFileName();
+                    Path path = Paths.get(name);
+                    Files.write(path, cat.getCatImage());
+                    IO.println(">>> Success: Image saved to " + path.toAbsolutePath());
+                } else {
+                    IO.println(">>> Note: No image attached to this cat.");
+                }
+            } else {
+                IO.println(">>> Error: Server returned status " + res.getStatus());
+            }
+        } catch (IOException ex) {
+            IO.println("Error: Could not write file. " + ex.getMessage());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    /** Prompts for cat details and sends a create request to the server. */
     private void handleAdd() {
         try {
-            Cat cat= getCatDetails(0);
+            Cat cat = getCatDetails(0);
             Response<JsonNode> res = client.send(RequestType.CREATE_CAT, cat);
             System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
-    private void handleUpdate(){
-        try{
+
+    /** Prompts for an ID and updated cat details, then sends an update request. */
+    private void handleUpdate() {
+        try {
             IO.println("ID to update: ");
             int id = scanner.nextInt();
             scanner.nextLine();
@@ -97,12 +136,14 @@ public class CatMenu {
             Response<JsonNode> res = client.send(RequestType.UPDATE_CAT, payload);
             System.out.println(res.getStatus() + res.getData().toPrettyString());
         } catch (Exception e) {
-            IO.println("Error:" + e.getMessage());
+            IO.println("Error: " + e.getMessage());
         }
     }
+
+    /** Prompts for an ID and sends a delete request to the server. */
     private void handleDelete() {
         try {
-            System.out.println("Id to delete:");
+            System.out.print("Id to delete: ");
             int id = scanner.nextInt();
             scanner.nextLine();
             Response<JsonNode> res = client.send(RequestType.DELETE_CAT, id);
@@ -111,55 +152,107 @@ public class CatMenu {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    /**
+     * Prompts the user for all cat fields, including an optional image file,
+     * and builds a {@link Cat} using the Builder.
+     * @author Bernard Joyce
+     * @param id the cat's ID (0 for new cats)
+     * @return a fully constructed {@link Cat}
+     */
     private Cat getCatDetails(int id) {
-        scanner.nextLine();
         IO.println("Owner Id:");
-        int OwnerId = scanner.nextInt();
+        int ownerId = scanner.nextInt();
+        scanner.nextLine();
+
         IO.print("Name: ");
         String name = scanner.nextLine().trim();
+
         Gender gender = findGender();
+
         IO.print("Breed: ");
         String breed = scanner.nextLine().trim();
-        IO.println("Date of birth: ");
-        Date date = findDate();
+
+        Date dateOfBirth = findDate();
+
         IO.print("Colour: ");
         String colour = scanner.nextLine().trim();
+
         IO.print("Identifying Markings: ");
-        String Identifying_Markings = scanner.nextLine().trim();
-        scanner.nextLine();
+        String markings = scanner.nextLine().trim();
 
-        
-        return new Cat(id, OwnerId,name, gender, breed, date, colour, Identifying_Markings);
-    }
-    private Gender findGender(){
-        IO.println("Gender: (1 for male, 2 for female)");
-        switch(scanner.nextInt()){
-            case 1 -> {
-                return Gender.MALE;
+        IO.print("Enter absolute path to cat image (leave blank to skip): ");
+        String pathInput = scanner.nextLine().trim();
+
+        String fileName    = "";
+        String contentType = "";
+        int    fileSize    = 0;
+        byte[] imageBytes  = null;
+
+        if (!pathInput.isBlank()) {
+            try {
+                Path path = Paths.get(pathInput);
+                if (Files.exists(path)) {
+                    fileName    = path.getFileName().toString();
+                    fileSize    = (int) Files.size(path);
+                    contentType = Files.probeContentType(path);
+                    imageBytes  = Files.readAllBytes(path);
+                    IO.println("Loaded: " + fileName + " (" + fileSize + " bytes)");
+                } else {
+                    IO.println("Warning: File not found. Proceeding without image.");
+                }
+            } catch (Exception e) {
+                IO.println("Error reading file: " + e.getMessage());
             }
-            case 2 -> {
-                return Gender.FEMALE;
-            }
-            default -> findGender();
         }
-        return null;
-    }
-    private Date findDate(){
-        Date date = null;
-        boolean validDate = false;
 
-        while (!validDate) {
+        return new Cat.Builder()
+                .id(id)
+                .ownerId(ownerId)
+                .name(name)
+                .gender(gender)
+                .breed(breed)
+                .dateOfBirth(dateOfBirth)
+                .colour(colour)
+                .identifyingMarkings(markings)
+                .fileName(fileName)
+                .contentType(contentType)
+                .fileSize(fileSize)
+                .catImage(imageBytes)
+                .build();
+    }
+
+    /**
+     * Prompts the user to choose a gender, looping until a valid choice is made.
+     * @author Bernard Joyce
+     * @return the selected {@link Gender}
+     */
+    private Gender findGender() {
+        while (true) {
+            IO.println("Gender: (1 for male, 2 for female)");
+            String input = scanner.nextLine().trim();
+            if (input.equals("1")) return Gender.MALE;
+            if (input.equals("2")) return Gender.FEMALE;
+            IO.println("Invalid choice. Please enter 1 or 2.");
+        }
+    }
+
+    /**
+     * Prompts the user for a date in dd/MM/yyyy format, looping until a valid date is entered.
+     * @author Bernard Joyce
+     * @return the parsed {@link Date}
+     */
+    private Date findDate() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);
+        while (true) {
             try {
                 IO.println("Date of birth (dd/MM/yyyy): ");
-                String dateInput = scanner.nextLine().trim();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                date = (Date) dateFormat.parse(dateInput);
-                validDate = true;
-            }
-            catch(ParseException e){
-                findDate();
+                java.util.Date utilDate = dateFormat.parse(scanner.nextLine().trim());
+                return new java.sql.Date(utilDate.getTime());
+            } catch (ParseException e) {
+                IO.println("Invalid format. Please use dd/MM/yyyy.");
             }
         }
-        return date;
     }
 }

@@ -15,6 +15,8 @@ import dao.jdbc.JdbcOwnerDao;
  * based on the operating system.</p>
  *
  * <p>Currently supports MySQL connections on macOS and Windows environments.</p>
+ * @author Michal Salabura
+ * @author Bernard Joyce
  */
 public class ServiceFactory {
     private final String url;
@@ -24,7 +26,7 @@ public class ServiceFactory {
     /**
      * Initializes the factory and configures the database connection URL
      * based on the underlying operating system.
-     *
+     * @author Michal Salabura
      * @throws RuntimeException if the operating system is not supported
      */
     public ServiceFactory() {
@@ -40,7 +42,7 @@ public class ServiceFactory {
 
     /**
      * Creates a {@link CatService} instance with its required DAO dependency.
-     *
+     * @author Michal Salabura
      * @return a configured {@link CatService}
      */
     public CatService createCatService() {
@@ -50,7 +52,7 @@ public class ServiceFactory {
 
     /**
      * Creates an {@link OwnerService} instance with its required DAO dependency.
-     *
+     * @author Michal Salabura
      * @return a configured {@link OwnerService}
      */
     public OwnerService createOwnerService() {
@@ -60,7 +62,7 @@ public class ServiceFactory {
 
     /**
      * Creates a {@link NutritionService} instance with its required DAO dependency.
-     *
+     * @author Bernard Joyce
      * @return a configured {@link NutritionService}
      */
     public NutritionService createNutritionService(){

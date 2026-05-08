@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 /**
  * JDBC implementation of {@link NutritionDao}.
  * Connects to a relational database to perform cat CRUD operations.
+ * @author Jack Cleary
  */
 public class JdbcNutritionDao implements NutritionDao {
     private final String _url;
@@ -24,6 +25,7 @@ public class JdbcNutritionDao implements NutritionDao {
 
     /**
      * Creates a new jdbcNutritionDao with the given database credentials.
+     * @author Jack Cleary
      * @param url  the JDBC connection URL
      * @param user the database username
      * @param pass the database password

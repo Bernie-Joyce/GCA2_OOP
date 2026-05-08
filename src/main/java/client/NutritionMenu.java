@@ -17,6 +17,7 @@ import protocol.Response;
 /**
  * Console menu for managing nutrition.
  * Handles user input and delegates requests to the server via {@link Client}.
+ * @author Jack Cleary
  */
 public class NutritionMenu {
 
@@ -26,6 +27,7 @@ public class NutritionMenu {
 
     /**
      * Creates a NutritionMenu with the given client.
+     * @author Jack Cleary
      * @param client the connected client used to send requests
      */
     NutritionMenu(Client client) {

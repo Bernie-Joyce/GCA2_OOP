@@ -6,6 +6,7 @@ package protocol;
  * <p>Each constant corresponds to a specific operation exposed by one of the
  * available services. The appropriate constant should be set as the type field
  * of a {@link Request} before it is dispatched.</p>
+ * @author Jack Cleary
  */
 public enum RequestType {
 
@@ -18,6 +19,9 @@ public enum RequestType {
     UPDATE_OWNER,
     DELETE_OWNER,
     FILTER_OWNERS,
+    UPLOAD_OWNER_IMAGE,
+    GET_OWNER_IMAGE,
+    GET_OWNER_METADATA,
 
     /**
      * Cat service operations.

@@ -13,6 +13,7 @@ import domain.Cat;
  *    <li>The updated cat data with new attribute values</li>
  *  </ul>
  *  </p>
+ *  @author Bernard Joyce
  *  @see RequestRouter
  *  @see domain.Cat
  *
@@ -28,14 +29,14 @@ public class Cat_Request {
      */
     private Cat cat;
     /**
-     *
+     * @author Bernard Joyce
      * @return the cat's unique ID
      */
     public int getId() {
         return id;
     }
     /**
-     *
+     * @author Bernard Joyce
      * @return the {@link domain.Cat} object with updated attributes,
      */
     public Cat getCat() {

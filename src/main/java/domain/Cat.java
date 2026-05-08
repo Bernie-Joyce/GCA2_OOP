@@ -1,129 +1,156 @@
 package domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.sql.Date;
 
 /**
  * Represents a cat in the system.
+ * @author Bernard Joyce
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonDeserialize(builder = Cat.Builder.class)
 public class Cat {
-    private int id;
-    private int ownerId;
-    private String name;
-    private Gender gender;
-    private String breed;
-    private Date dateOfBirth;
-    private String colour;
-    private String identifyingMarkings;
+    private final int id;
+    private final int ownerId;
+    private final String name;
+    private final Gender gender;
+    private final String breed;
+    private final Date dateOfBirth;
+    private final String colour;
+    private final String identifyingMarkings;
+    private final String fileName;
+    private final String contentType;
+    private final int fileSize;
+    private final byte[] catImage;
 
-    /** Returns the cat's unique ID. */
-    public int getId() {
-        return id;
-    }
-
-    /** Returns the ID of the cat's owner. */
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    /** Returns the cat's name. */
-    public String getName() {
-        return name;
-    }
-
-    /** Returns the cat's gender. */
-    public Gender getGender() {
-        return gender;
-    }
-
-    /** Returns the cat's breed. */
-    public String getBreed() {
-        return breed;
-    }
-
-    /** Returns the cat's date of birth. */
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    /** Returns the cat's colour. */
-    public String getColour() {
-        return colour;
-    }
-
-    /** Returns the cat's identifying markings. */
-    public String getIdentifyingMarkings() {
-        return identifyingMarkings;
+    private Cat(Builder builder) {
+        this.id = builder.id;
+        this.ownerId = builder.ownerId;
+        this.name = builder.name;
+        this.gender = builder.gender;
+        this.breed = builder.breed;
+        this.dateOfBirth = builder.dateOfBirth;
+        this.colour = builder.colour;
+        this.identifyingMarkings = builder.identifyingMarkings;
+        this.fileName = builder.fileName;
+        this.contentType = builder.contentType;
+        this.fileSize = builder.fileSize;
+        this.catImage = builder.catImage;
     }
 
     /**
-     * Creates a new Cat with the given attributes.
-     * @param id                  the cat's unique ID (must be >= 0)
-     * @param ownerId             the ID of the cat's owner (must be >= 0)
-     * @param name                the cat's name (required)
-     * @param gender              the cat's gender (required)
-     * @param breed               the cat's breed (required)
-     * @param dateOfBirth         the cat's date of birth (required)
-     * @param colour              the cat's colour (required)
-     * @param identifyingMarkings any identifying markings (required)
-     * @throws IllegalArgumentException if any required field is null, blank, or invalid
+     * Builder for {@link Cat}.
      */
-    @JsonCreator
-    public Cat(@JsonProperty("id") int id,
-               @JsonProperty("ownerId") int ownerId,
-               @JsonProperty("name") String name,
-               @JsonProperty("gender") Gender gender,
-               @JsonProperty("breed") String breed,
-               @JsonProperty("dateOfBirth") Date dateOfBirth,
-               @JsonProperty("colour") String colour,
-               @JsonProperty("identifyingMarkings") String identifyingMarkings)
-    {
-        if (id < 0) {
-            throw new IllegalArgumentException("id cant be below 0");
-        }
-        if (ownerId < 0) {
-            throw new IllegalArgumentException("owner id cant be below 0");
-        }
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name is required");
-        }
-        if (gender == null) {
-            throw new IllegalArgumentException("Gender is required");
-        }
-        if (breed == null || breed.isBlank()) {
-            throw new IllegalArgumentException("Breed is required");
-        }
-        if (dateOfBirth == null) {
-            throw new IllegalArgumentException("Date of Birth is required");
-        }
-        if (colour == null || colour.isBlank()) {
-            throw new IllegalArgumentException("Colour is required");
-        }
-        if (identifyingMarkings == null || identifyingMarkings.isBlank()) {
-            throw new IllegalArgumentException("Identifying markings is required");
-        }
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class Builder {
+        private int id;
+        private int ownerId;
+        private String name;
+        private Gender gender;
+        private String breed;
+        private Date dateOfBirth;
+        private String colour;
+        private String identifyingMarkings;
+        private String fileName;
+        private String contentType;
+        private int fileSize;
+        private byte[] catImage;
 
-        this.id = id;
-        this.ownerId = ownerId;
-        this.name = name;
-        this.gender = gender;
-        this.breed = breed;
-        this.dateOfBirth = dateOfBirth;
-        this.colour = colour;
-        this.identifyingMarkings = identifyingMarkings;
+        public Builder id(int id)                                     { this.id = id; return this; }
+        public Builder ownerId(int ownerId)                           { this.ownerId = ownerId; return this; }
+        public Builder name(String name)                              { this.name = name; return this; }
+        public Builder gender(Gender gender)                          { this.gender = gender; return this; }
+        public Builder breed(String breed)                            { this.breed = breed; return this; }
+        public Builder dateOfBirth(Date dateOfBirth)                  { this.dateOfBirth = dateOfBirth; return this; }
+        public Builder colour(String colour)                          { this.colour = colour; return this; }
+        public Builder identifyingMarkings(String identifyingMarkings){ this.identifyingMarkings = identifyingMarkings; return this; }
+
+        @JsonProperty("file_name")
+        public Builder fileName(String fileName)                      { this.fileName = fileName; return this; }
+
+        @JsonProperty("content_type")
+        public Builder contentType(String contentType)                { this.contentType = contentType; return this; }
+
+        @JsonProperty("file_size")
+        public Builder fileSize(int fileSize)                         { this.fileSize = fileSize; return this; }
+
+        @JsonProperty("cat_image")
+        public Builder catImage(byte[] catImage)                      { this.catImage = catImage; return this; }
+
+        /**
+         * Builds the {@link Cat}, validating all required fields.
+         * @throws IllegalArgumentException if any required field is null, blank, or invalid
+         */
+        public Cat build() {
+            if (id < 0)                                       throw new IllegalArgumentException("id cant be below 0");
+            if (ownerId < 0)                                  throw new IllegalArgumentException("owner id cant be below 0");
+            if (name == null || name.isBlank())               throw new IllegalArgumentException("Name is required");
+            if (gender == null)                               throw new IllegalArgumentException("Gender is required");
+            if (breed == null || breed.isBlank())             throw new IllegalArgumentException("Breed is required");
+            if (dateOfBirth == null)                          throw new IllegalArgumentException("Date of Birth is required");
+            if (colour == null || colour.isBlank())           throw new IllegalArgumentException("Colour is required");
+            if (identifyingMarkings == null || identifyingMarkings.isBlank())
+                throw new IllegalArgumentException("Identifying markings is required");
+            return new Cat(this);
+        }
     }
+
+    /** Returns the cat's unique ID. */
+    public int getId()                        { return id; }
+
+    /** Returns the ID of the cat's owner. */
+    public int getOwnerId()                   { return ownerId; }
+
+    /** Returns the cat's name. */
+    public String getName()                   { return name; }
+
+    /** Returns the cat's gender. */
+    public Gender getGender()                 { return gender; }
+
+    /** Returns the cat's breed. */
+    public String getBreed()                  { return breed; }
+
+    /** Returns the cat's date of birth. */
+    public Date getDateOfBirth()              { return dateOfBirth; }
+
+    /** Returns the cat's colour. */
+    public String getColour()                 { return colour; }
+
+    /** Returns the cat's identifying markings. */
+    public String getIdentifyingMarkings()    { return identifyingMarkings; }
+
+    /** Returns the cat's image file name. */
+    @JsonProperty("file_name")
+    public String getFileName()               { return fileName; }
+
+    /** Returns the cat's image content type. */
+    @JsonProperty("content_type")
+    public String getContentType()            { return contentType; }
+
+    /** Returns the cat's image file size. */
+    @JsonProperty("file_size")
+    public int getFileSize()                  { return fileSize; }
+
+    /** Returns the cat's image as a byte array. */
+    @JsonProperty("cat_image")
+    public byte[] getCatImage()               { return catImage; }
 
     @Override
     public String toString() {
-        return "Cat{id=" + id +
+        return "Cat{" +
+                "id=" + id +
                 ", ownerId=" + ownerId +
-                ", name=" + name +
+                ", name='" + name + '\'' +
                 ", gender=" + gender +
-                ", breed=" + breed +
+                ", breed='" + breed + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", colour=" + colour +
-                ", identifyingMarkings=" + identifyingMarkings;
+                ", colour='" + colour + '\'' +
+                ", identifyingMarkings='" + identifyingMarkings + '\'' +
+                ", fileName='" + fileName + '\'' +
+                '}';
     }
 }

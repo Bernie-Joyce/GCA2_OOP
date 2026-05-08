@@ -5,6 +5,7 @@ import server.ErrorType;
 /**
  * Represents a response in the protocol layer, encapsulating a status identifier,
  * a message, status code and Data.
+ * @author Jack Cleary
  */
 public class Response <T> {
     private String fStatus;
@@ -14,6 +15,7 @@ public class Response <T> {
 
     /**
      * Constructs a default {@link Response} with an empty status, message, code and no Data.
+     * @author Jack Cleary
      */
     public Response(){
         fStatus = "";
@@ -24,6 +26,7 @@ public class Response <T> {
 
     /**
      * Constructs {@link Response} with provided status, message, code and Data.
+     * @author Jack Cleary
      */
     public Response(String status, String message,ErrorType errorType, T data){
         fStatus = status;
@@ -62,7 +65,7 @@ public class Response <T> {
 
     /**
      * Creates a successful {@link Response} instance.
-     *
+     * @author Jack Cleary
      * @param message a human-readable message describing the result
      * @param data the payload to be returned with the response
      * @param errorType the error type associated with the response (if applicable)
@@ -74,7 +77,7 @@ public class Response <T> {
 
     /**
      * Creates a failed {@link Response} instance.
-     *
+     * @author Jack Cleary
      * @param message a human-readable message describing the error
      * @param data the payload to be returned with the response (may be null)
      * @param errorType the error type describing the failure

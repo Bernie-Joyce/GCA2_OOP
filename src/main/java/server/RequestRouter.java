@@ -1,9 +1,10 @@
 package server;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import service.*;
 import protocol.*;
 import domain.*;
@@ -25,6 +26,9 @@ import java.util.Optional;
  * for owners, cats, and nutrition records).</p>
  *
  * <p>JSON conversion is handled internally using Jackson's {@link ObjectMapper}.</p>
+ * @author Bernard Joyce
+ * @author Jack Cleary
+ * @author Michal Salabura
  */
 public class RequestRouter {
     private final Map<RequestType, RequestHandler> handlers = new HashMap<>();
@@ -214,6 +218,64 @@ public class RequestRouter {
             }
             return Response.success("Filtered List: ", list, ErrorType.SUCCESS);
         });
+
+        handlers.put(RequestType.UPLOAD_OWNER_IMAGE, req -> {
+            try {
+                FileUploadPayload payload = MAPPER.treeToValue(req.getPayload(), FileUploadPayload.class);
+                byte[] imageBytes = Base64.getDecoder().decode(payload.getImageData());
+
+                Owner updated = ownerService.uploadImage(
+                        payload.getId(),
+                        imageBytes,
+                        payload.getFileName(),
+                        payload.getContentType(),
+                        payload.getFileSize()
+                );
+                return Response.success("Image uploaded for owner id: " + payload.getId(), updated, ErrorType.SUCCESS);
+            } catch (Exception e) {
+                return Response.failure("Upload failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
+        });
+
+        handlers.put(RequestType.GET_OWNER_IMAGE, req -> {
+            try {
+                int id = req.getPayload().asInt();
+                Owner owner = ownerService.getOwnerImage(id);
+                String base64 = Base64.getEncoder().encodeToString(owner.getOwnerImage());
+
+                ObjectNode result = MAPPER.createObjectNode();
+                result.put("id", owner.getId());
+                result.put("fileName", owner.getFileName());
+                result.put("contentType", owner.getContentType());
+                result.put("fileSize", owner.getFileSize());
+                result.put("imageData", base64);
+
+                return Response.success("Image retrieved for owner id: " + id, result, ErrorType.SUCCESS);
+            } catch(Exception e) {
+                return Response.failure("Retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
+        });
+
+        handlers.put(RequestType.GET_OWNER_METADATA, req -> {
+            try {
+                int id = req.getPayload().asInt();
+                Owner owner = ownerService.getOwnerMetadata(id);
+
+                ObjectNode result = MAPPER.createObjectNode();
+                result.put("id", owner.getId());
+                result.put("fileName", owner.getFileName());
+                result.put("contentType", owner.getContentType());
+                result.put("fileSize", owner.getFileSize());
+
+                return Response.success("Metadata retrieved for owner: " + id, result, ErrorType.SUCCESS);
+            } catch (Exception e) {
+                return Response.failure("Metadata retrieval failed: " + e.getMessage(), null, ErrorType.INTERNAL_ERROR);
+            }
+        });
+
+        handlers.put(RequestType.DISCONNECT, req -> {
+            return Response.success("Client disconnected", null, ErrorType.SUCCESS);
+        });
     }
 
     /**
@@ -221,7 +283,8 @@ public class RequestRouter {
      *
      * <p>The request type is extracted, matched against the registered handlers,
      * and executed. If no handler exists, an error response is returned.</p>
-     *
+     * @author Bernard Joyce
+     * @author Jack Cleary
      * @param request the incoming client request
      * @return the {@link Response} produced by the corresponding handler
      */
@@ -250,7 +313,8 @@ public class RequestRouter {
 
     /**
      * Validates a {@link Cat} object and returns an error message if invalid.
-     *
+     * @author Bernard Joyce
+     * @author Jack Cleary
      * @param cat the cat to validate
      * @return a validation error message, or {@code null} if valid
      */

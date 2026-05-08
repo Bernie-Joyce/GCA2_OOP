@@ -10,6 +10,7 @@ import domain.Owner;
  * owner records.</p>
  *
  * <p>It is used for communication between client and server layers.</p>
+ * @author Bernard Joyce
  */
 public class Owner_Request {
     private int id;
@@ -17,7 +18,7 @@ public class Owner_Request {
 
     /**
      * Returns the identifier associated with the request.
-     *
+     * @author Bernard Joyce
      * @return the owner ID
      */
     public int getId() {
@@ -26,7 +27,7 @@ public class Owner_Request {
 
     /**
      * Returns the {@link Owner} payload of the request.
-     *
+     * @author Bernard Joyce
      * @return the owner data, or {@code null} if not provided
      */
     public Owner getOwner() {

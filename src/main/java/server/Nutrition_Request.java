@@ -12,6 +12,7 @@ import domain.Nutrition;
  * nutrition records associated with a specific cat.</p>
  *
  * <p>It is typically used in communication between client and server layers.</p>
+ * @author Jack Cleary
  */
 public class Nutrition_Request {
     private int id;
@@ -19,7 +20,7 @@ public class Nutrition_Request {
 
     /**
      * Returns the identifier associated with the request.
-     *
+     * @author Jack Cleary
      * @return the ID
      */
     public int getId() {
@@ -28,7 +29,7 @@ public class Nutrition_Request {
 
     /**
      * Returns the {@link Nutrition} payload of the request.
-     *
+     * @author Jack Cleary
      * @return the nutrition data, or {@code null} if not provided
      */
     public Nutrition getNutrition() {

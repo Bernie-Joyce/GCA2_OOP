@@ -5,6 +5,7 @@ import java.util.Scanner;
 /**
  * Entry point for the client application.
  * Displays the main menu and delegates to sub-menus for cats, owners, and nutrition.
+ * @author Michal Salabura
  */
 public class ClientMain {
     private final Scanner scanner = new Scanner(System.in);

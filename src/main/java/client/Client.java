@@ -13,6 +13,7 @@ import java.net.Socket;
 /**
  * Client that sends requests to the server and receives responses.
  * Implements {@link AutoCloseable} for use in try-with-resources.
+ * @author Michal Salabura
  */
 public class Client implements AutoCloseable {
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -22,6 +23,7 @@ public class Client implements AutoCloseable {
 
     /**
      * Creates a new Client and connects to the server.
+     * @author Michal Salabura
      * @param host the server IP address
      * @param port the server port number
      * @throws IOException if the connection cannot be established
@@ -34,6 +36,7 @@ public class Client implements AutoCloseable {
 
     /**
      * Sends a request to the server and returns the response.
+     * @author Michal Salabura
      * @param type the type of request to send
      * @param payload the request data, serialised to JSON
      * @return the server's response containing a {@link JsonNode}
@@ -49,10 +52,14 @@ public class Client implements AutoCloseable {
 
     /**
      * Closes the underlying socket connection.
+     * @author Michal Salabura
      * @throws IOException if the socket cannot be closed
      */
     @Override
     public void close() throws IOException {
+        try {
+            send(RequestType.DISCONNECT, null);
+        } catch (Exception ignored) {}
         socket.close();
     }
 }

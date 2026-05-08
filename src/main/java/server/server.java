@@ -23,16 +23,19 @@ import service.ServiceFactory;
  *
  * <p>Communication between client and server is performed using JSON
  * messages serialized/deserialized with Jackson's {@link ObjectMapper}.</p>
+ * @author Bernard Joyce
+ * @author Jack Cleary
  */
 public class server {
     private final int port;
 
+    private volatile boolean running = true;
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private ExecutorService pool;
+    private final ExecutorService pool;
 
     /**
      * Creates a new server instance bound to the specified port.
-     *
+     * @author Bernard Joyce
      * @param port the TCP port to listen on (must be between 1024 and 65535)
      * @throws IllegalArgumentException if the port is outside the valid range
      */
@@ -48,14 +51,15 @@ public class server {
      *
      * <p>Each accepted client is delegated to a separate thread managed by
      * a cached thread pool.</p>
-     *
+     * @author Bernard Joyce
+     * @author Jack Cleary
      * @throws IOException if the server socket fails to open or accept connections
      */
     public void start() throws IOException {
         System.out.println("Server starting on port " + port);
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            while (true) {
+            while (running) {
                 Socket clientSocket = serverSocket.accept();    // block until a client arrives
                 System.out.println("Accepted: " + clientSocket.getInetAddress());
                 pool.submit(new ClientHandler(clientSocket)); // hand off to pool
@@ -69,6 +73,7 @@ public class server {
     /**
      * Shuts down the server's thread pool, waiting for active tasks
      * to complete before forcing termination if necessary.
+     * @author Bernard Joyce
      */
     private void shutdown() {
         System.out.println("Shutting down thread pool...");
@@ -91,10 +96,12 @@ public class server {
      * <p>This runnable reads JSON requests from the socket input stream,
      * processes them through the {@link RequestRouter}, and sends back
      * JSON responses to the client.</p>
+     * @author Bernard Joyce
+     * @author Jack Cleary
      */
     private static class ClientHandler implements Runnable {
 
-        private Socket socket;
+        private final Socket socket;
 
         /**
          * Creates a new client handler for the given socket connection.
@@ -120,6 +127,11 @@ public class server {
                 while ((line = in.readLine()) != null) {
 
                     Request req = MAPPER.readValue(line, Request.class);
+                    if (req.getType().equals("DISCONNECT")) {
+                        System.out.println("Client disconnected cleanly from " + socket.getInetAddress());
+                        out.println(MAPPER.writeValueAsString(Response.success("Goodbye", null, ErrorType.SUCCESS)));
+                        break;
+                    }
 //                  System.out.println("ECHO: " + line);
                     ServiceFactory fact = new ServiceFactory();
                     OwnerService ownerService =  fact.createOwnerService();
@@ -148,7 +160,7 @@ public class server {
 
     /**
      * Application entry point that starts the server on port 9000.
-     *
+     * @author Bernard Joyce
      * @throws IOException if the server fails to start or bind to the port
      */
      static void main() throws IOException {
