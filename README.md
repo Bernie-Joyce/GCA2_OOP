@@ -259,38 +259,38 @@ flowchart TD
 
 ## 9. Contribution Matrix (Required)
 ### 9.1 Matrix
-| Task                                | Main person     | Other work                   | Notes                                   |
-|:------------------------------------|:----------------|:-----------------------------|:----------------------------------------|
-| Domain proposal and entity planning | Michal Salabura | Bernard Joyce                | Initial cat management idea             |
-| GitHub repo setup                   | Bernard Joyce   | -                            | Created repo, branches and README       |
-| Database schema + sample data       | Michal Salabura | Bernard Joyce                | Added cats, owners and nutrition tables |
-| Cat class + builder                 | Bernard Joyce   | -                            | Validation and builder pattern          |
-| Owner class                         | Michal Salabura | -                            | Added image fields                      |
-| Nutrition class                     | Jack Cleary     | -                            | Nutrition values and validation         |
-| Gender enum                         | Bernard Joyce   | -                            | Male/Female enum                        |
-| CatDao interface                    | Bernard Joyce   | -                            | CRUD and filtering methods              |
-| OwnerDao interface                  | Michal Salabura | -                            | Added image methods                     |
-| NutritionDao interface              | Jack Cleary     | -                            | Added nutrition filtering               |
-| JdbcCatDao                          | Bernard Joyce   | -                            | Database queries for cats               |
-| JdbcOwnerDao                        | Michal Salabura | -                            | Image upload/download support           |
-| JdbcNutritionDao                    | Jack Cleary     | -                            | Nutrition database queries              |
-| CatService                          | Bernard Joyce   | -                            | Gender filtering                        |
-| OwnerService                        | Michal Salabura | -                            | Owner image methods                     |
-| NutritionService                    | Jack Cleary     | -                            | Meals-per-day filtering                 |
-| ServiceFactory                      | Michal Salabura | Bernard Joyce                | Database connection setup               |
-| Service interface                   | Michal Salabura | -                            | Shared service interface                |
-| Request + RequestType               | Jack Cleary     | Bernard Joyce                | Added request types                     |
-| Response + ErrorType                | Jack Cleary     | Bernard Joyce                | Response wrapper                        |
-| RequestHandler interface            | Jack Cleary     | Bernard Joyce                | Lambda request handling                 |
-| RequestRouter                       | Bernard Joyce   | Jack Cleary                  | Maps requests to handlers               |
-| DTO request classes                 | Bernard Joyce   | Jack Cleary                  | Used for update requests                |
-| Multithreaded server                | Bernard Joyce   | Jack Cleary                  | Used cached thread pool                 |
-| Client socket code                  | Michal Salabura | -                            | Send/receive JSON                       |
-| ClientMain                          | Michal Salabura | -                            | Main menu                               |
-| CatMenu                             | Bernard Joyce   | -                            | CRUD and image saving                   |
-| OwnerMenu                           | Michal Salabura | -                            | Upload/download images                  |
-| NutritionMenu                       | Jack Cleary     | -                            | Nutrition filtering                     |
-| FileUploadPayload                   | Michal Salabura | -                            | DTO for image uploads                   |
-| Stage 3 tests                       | Michal Salabura | Jack Cleary, Bernard Joyce   | DAO and JSON tests                      |
-| Stage 4 tests                       | Bernard Joyce   | Jack Cleary, Michal Salabura | Server and binary tests                 |
+| Task                                | Main person     | Other work                 | Notes                                   |
+|:------------------------------------|:----------------|:---------------------------|:----------------------------------------|
+| Domain proposal and entity planning | Michal Salabura | Bernard Joyce              | Initial cat management idea             |
+| GitHub repo setup                   | Bernard Joyce   | -                          | Created repo, branches and README       |
+| Database schema + sample data       | Michal Salabura | Bernard Joyce              | Added cats, owners and nutrition tables |
+| Cat class + builder                 | Bernard Joyce   | -                          | Validation and builder pattern          |
+| Owner class                         | Michal Salabura | -                          | Added image fields                      |
+| Nutrition class                     | Jack Cleary     | -                          | Nutrition values and validation         |
+| Gender enum                         | Bernard Joyce   | -                          | Male/Female enum                        |
+| CatDao interface                    | Bernard Joyce   | -                          | CRUD and filtering methods              |
+| OwnerDao interface                  | Michal Salabura | -                          | Added image methods                     |
+| NutritionDao interface              | Jack Cleary     | -                          | Added nutrition filtering               |
+| JdbcCatDao                          | Bernard Joyce   | -                          | Database queries for cats               |
+| JdbcOwnerDao                        | Michal Salabura | -                          | Image upload/download support           |
+| JdbcNutritionDao                    | Jack Cleary     | -                          | Nutrition database queries              |
+| CatService                          | Bernard Joyce   | -                          | Gender filtering                        |
+| OwnerService                        | Michal Salabura | -                          | Owner image methods                     |
+| NutritionService                    | Jack Cleary     | -                          | Meals-per-day filtering                 |
+| ServiceFactory                      | Michal Salabura | Bernard Joyce              | Database connection setup               |
+| Service interface                   | Michal Salabura | -                          | Shared service interface                |
+| Request + RequestType               | Jack Cleary     | Bernard Joyce              | Added request types                     |
+| Response + ErrorType                | Jack Cleary     | Bernard Joyce              | Response wrapper                        |
+| RequestHandler interface            | Jack Cleary     | Bernard Joyce              | Lambda request handling                 |
+| RequestRouter                       | Bernard Joyce   | Jack Cleary                | Maps requests to handlers               |
+| DTO request classes                 | Bernard Joyce   | Jack Cleary                | Used for update requests                |
+| Multithreaded server                | Bernard Joyce   | Jack Cleary                | Used cached thread pool                 |
+| Client socket code                  | Michal Salabura | -                          | Send/receive JSON                       |
+| ClientMain                          | Michal Salabura | -                          | Main menu                               |
+| CatMenu                             | Bernard Joyce   | -                          | CRUD and image saving                   |
+| OwnerMenu                           | Michal Salabura | -                          | Upload/download images                  |
+| NutritionMenu                       | Jack Cleary     | -                          | Nutrition filtering                     |
+| FileUploadPayload                   | Michal Salabura | -                          | DTO for image uploads                   |
+| Stage 3 tests                       | Michal Salabura | Jack Cleary, Bernard Joyce | DAO and JSON tests                      |
+| Stage 4 tests                       | Michal Salabura | Jack Cleary, Bernard Joyce | Server and binary tests                 |
 ---
