@@ -24,7 +24,6 @@ public class Owner {
     /**
      * Creates an Owner with a default ID of 0.
      * Convenience constructor for new owners before they are persisted.
-     * @author Michal Salabura
      * @param firstName the owner's first name
      * @param lastName  the owner's last name
      * @param age       the owner's age
@@ -93,7 +92,6 @@ public class Owner {
 
     /**
      * Creates a new Owner with the given attributes.
-     * @author Michal Salabura
      * @param id            the owner's unique ID (must be >= 0)
      * @param firstName     the owner's first name (required)
      * @param lastName      the owner's last name (required)

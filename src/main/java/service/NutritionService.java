@@ -22,7 +22,6 @@ public class NutritionService implements Service {
 
     /**
      * Constructs a {@code NutritionService} with the given DAO.
-     * @author Jack Cleary
      * @param dao the {@link NutritionDao} used for data access
      * @throws IllegalArgumentException if {@code dao} is {@code null}
      */
@@ -34,7 +33,6 @@ public class NutritionService implements Service {
 
     /**
      * Creates a new {@link Nutrition} record.
-     * @author Jack Cleary
      * @param nutrition the nutrition data to create
      * @return the created nutrition record
      * @throws Exception if the operation fails
@@ -45,7 +43,6 @@ public class NutritionService implements Service {
 
     /**
      * Retrieves nutrition data for a specific cat.
-     * @author Jack Cleary
      * @param catId the unique identifier of the cat
      * @return an {@link Optional} containing the nutrition data if found
      * @throws Exception if the retrieval fails
@@ -56,7 +53,6 @@ public class NutritionService implements Service {
 
     /**
      * Retrieves all nutrition records.
-     * @author Jack Cleary
      * @return a list of all nutrition records
      * @throws Exception if the retrieval fails
      */
@@ -66,7 +62,6 @@ public class NutritionService implements Service {
 
     /**
      * Deletes nutrition data associated with a specific cat.
-     * @author Jack Cleary
      * @param catId the unique identifier of the cat
      * @throws Exception if the deletion fails
      */
@@ -80,7 +75,6 @@ public class NutritionService implements Service {
 
     /**
      * Updates nutrition data for a specific cat.
-     * @author Jack Cleary
      * @param catId the unique identifier of the cat
      * @param nutrition the updated nutrition data
      * @return the updated nutrition record
@@ -92,7 +86,6 @@ public class NutritionService implements Service {
 
     /**
      * Filters nutrition records based on a minimum meals-per-day quota.
-     * @author Jack Cleary
      * @param quota the minimum number of meals per day
      * @return a list of nutrition records exceeding the given quota
      * @throws Exception if the operation fails
@@ -103,7 +96,6 @@ public class NutritionService implements Service {
 
     /**
      * Converts a {@link Nutrition} object to its JSON representation.
-     * @author Jack Cleary
      * @param nutrition the nutrition object to serialize
      * @return a JSON string representation
      * @throws JsonProcessingException if serialization fails
@@ -114,7 +106,6 @@ public class NutritionService implements Service {
 
     /**
      * Converts a JSON string into a {@link Nutrition} object.
-     * @author Jack Cleary
      * @param json the JSON string
      * @return the deserialized nutrition object
      * @throws JsonProcessingException if deserialization fails
@@ -125,7 +116,6 @@ public class NutritionService implements Service {
 
     /**
      * Converts a list of {@link Nutrition} objects to JSON.
-     * @author Jack Cleary
      * @param nutritionList the list of nutrition records
      * @return a JSON string representation
      * @throws JsonProcessingException if serialization fails
@@ -136,7 +126,6 @@ public class NutritionService implements Service {
 
     /**
      * Converts a JSON string into a list of {@link Nutrition} objects.
-     * @author Jack Cleary
      * @param json the JSON string
      * @return a list of deserialized nutrition records
      * @throws JsonProcessingException if deserialization fails

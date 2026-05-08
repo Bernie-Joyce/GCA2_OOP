@@ -24,7 +24,6 @@ public class OwnerService implements Service {
 
     /**
      * Constructs an {@code OwnerService} with the given data access object.
-     * @author Michal Salabura
      * @param dao the {@link OwnerDao} used for persistence operations
      * @throws IllegalArgumentException if {@code dao} is {@code null}
      */
@@ -36,7 +35,6 @@ public class OwnerService implements Service {
 
     /**
      * Creates a new {@link Owner}.
-     * @author Michal Salabura
      * @param owner the owner to create
      * @return the created owner
      * @throws Exception if the creation fails
@@ -47,7 +45,6 @@ public class OwnerService implements Service {
 
     /**
      * Retrieves an {@link Owner} by its unique identifier.
-     * @author Michal Salabura
      * @param id the owner ID
      * @return an {@link Optional} containing the owner if found, otherwise empty
      * @throws Exception if the retrieval fails
@@ -58,7 +55,6 @@ public class OwnerService implements Service {
 
     /**
      * Retrieves all owners.
-     * @author Michal Salabura
      * @return a list of all owners
      * @throws Exception if the retrieval fails
      */
@@ -68,7 +64,6 @@ public class OwnerService implements Service {
 
     /**
      * Deletes an owner by its unique identifier.
-     * @author Michal Salabura
      * @param id the owner ID
      * @throws Exception if the deletion fails
      */
@@ -82,7 +77,6 @@ public class OwnerService implements Service {
 
     /**
      * Updates an existing owner.
-     * @author Michal Salabura
      * @param id the ID of the owner to update
      * @param owner the updated owner data
      * @return the updated owner
@@ -94,7 +88,6 @@ public class OwnerService implements Service {
 
     /**
      * Retrieves owners that match the given filter.
-     * @author Michal Salabura
      * @param filter a {@link Predicate} used to filter owners
      * @return a list of owners matching the filter
      * @throws Exception if the operation fails
@@ -105,7 +98,6 @@ public class OwnerService implements Service {
 
     /**
      * Converts an {@link Owner} object to its JSON representation.
-     * @author Michal Salabura
      * @param owner the owner to serialize
      * @return a JSON string representation of the owner
      * @throws JsonProcessingException if serialization fails
@@ -116,7 +108,6 @@ public class OwnerService implements Service {
 
     /**
      * Converts a JSON string into an {@link Owner} object.
-     * @author Michal Salabura
      * @param json the JSON string
      * @return the deserialized owner
      * @throws JsonProcessingException if deserialization fails
@@ -127,7 +118,6 @@ public class OwnerService implements Service {
 
     /**
      * Converts a list of {@link Owner} objects to JSON.
-     * @author Michal Salabura
      * @param ownerList the list of owners
      * @return a JSON string representation of the list
      * @throws JsonProcessingException if serialization fails
@@ -138,7 +128,6 @@ public class OwnerService implements Service {
 
     /**
      * Converts a JSON string into a list of {@link Owner} objects.
-     * @author Michal Salabura
      * @param json the JSON string
      * @return a list of deserialized owners
      * @throws JsonProcessingException if deserialization fails
@@ -148,17 +137,39 @@ public class OwnerService implements Service {
         });
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Uploads an image and associates it with the specified owner.
+     *
+     * @param id          the ID of the owner to associate the image with
+     * @param image       the raw bytes of the image file
+     * @param fileName    the original name of the image file
+     * @param contentType the MIME type of the image (e.g. {@code image/jpeg})
+     * @param fileSize    the size of the image file in bytes
+     * @return the updated {@link Owner} after the image has been associated
+     * @throws Exception if the upload fails or the owner cannot be found
+     */
     public Owner uploadImage(int id, byte[] image, String fileName, String contentType, int fileSize) throws Exception {
         return dao.uploadImage(id, image, fileName, contentType, fileSize);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Retrieves the image associated with the specified owner.
+     *
+     * @param id the ID of the owner whose image is to be retrieved
+     * @return the {@link Owner} containing the associated image data
+     * @throws Exception if the retrieval fails or no image is found for the owner
+     */
     public Owner getOwnerImage(int id) throws Exception {
         return dao.getOwnerImage(id);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Retrieves the image metadata associated with the specified owner.
+     *
+     * @param id the ID of the owner whose image metadata is to be retrieved
+     * @return the {@link Owner} containing the associated image metadata
+     * @throws Exception if the retrieval fails or no metadata is found for the owner
+     */
     public Owner getOwnerMetadata(int id) throws Exception {
         return dao.getOwnerMetadata(id);
     }

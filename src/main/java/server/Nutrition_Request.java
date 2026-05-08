@@ -20,7 +20,6 @@ public class Nutrition_Request {
 
     /**
      * Returns the identifier associated with the request.
-     * @author Jack Cleary
      * @return the ID
      */
     public int getId() {
@@ -29,7 +28,6 @@ public class Nutrition_Request {
 
     /**
      * Returns the {@link Nutrition} payload of the request.
-     * @author Jack Cleary
      * @return the nutrition data, or {@code null} if not provided
      */
     public Nutrition getNutrition() {

@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Unit tests for Owner Json.
+ * @author  Michal Salabura
+ */
 public class OwnerJsonTest {
 
     private final ObjectMapper _mapper = new ObjectMapper();

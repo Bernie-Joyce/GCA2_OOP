@@ -18,7 +18,6 @@ public class Owner_Request {
 
     /**
      * Returns the identifier associated with the request.
-     * @author Bernard Joyce
      * @return the owner ID
      */
     public int getId() {
@@ -27,7 +26,6 @@ public class Owner_Request {
 
     /**
      * Returns the {@link Owner} payload of the request.
-     * @author Bernard Joyce
      * @return the owner data, or {@code null} if not provided
      */
     public Owner getOwner() {

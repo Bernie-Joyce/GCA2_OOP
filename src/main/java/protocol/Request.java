@@ -14,7 +14,6 @@ public class Request {
 
     /**
      * Constructs a default {@link Request} with an empty type and no payload.
-     * @author Jack Cleary
      */
     public Request(){
         fType = "";
@@ -23,7 +22,6 @@ public class Request {
 
     /**
      * Constructs a {@link Request} with the specified type and payload.
-     * @author Jack Cleary
      * @param type    the request type identifier
      * @param payload the JSON payload associated with this request
      */
@@ -36,14 +34,12 @@ public class Request {
 
     /**
      * Returns the type identifier of this request.
-     * @author Jack Cleary
      * @return the request type as a String
      */
     public String getType(){return fType;}
 
     /**
      * Returns the JSON payload of this request.
-     * @author Jack Cleary
      * @return the payload as a {@link JsonNode}
      */
     public JsonNode getPayload(){return fPayload;}
@@ -52,14 +48,12 @@ public class Request {
 
     /**
      * Sets the type identifier of this request.
-     * @author Jack Cleary
      * @param type the new request type
      */
     public void setType(String type){fType = type;}
 
     /**
      * Sets the JSON payload of this request.
-     * @author Jack Cleary
      * @param payload the new payload as a {@link JsonNode}
      */
     public void setPayload(JsonNode payload){fPayload = payload;}

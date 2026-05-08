@@ -16,6 +16,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import domain.Owner;
 
+/** Unit tests for {@link RequestRouter}.
+ * @author Michal Salabura
+ */
 public class RequestRouterTest {
 
     private static final String URL  = "jdbc:mysql://localhost:3306/catnowner_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";

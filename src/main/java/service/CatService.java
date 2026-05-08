@@ -24,7 +24,6 @@ public class CatService implements Service {
 
     /**
      * Constructs a {@code CatService} with the given DAO.
-     * @author Bernard Joyce
      * @param dao the {@link CatDao} used for data access
      * @throws IllegalArgumentException if {@code dao} is {@code null}
      */
@@ -36,7 +35,6 @@ public class CatService implements Service {
 
     /**
      * Creates a new {@link Cat}.
-     * @author Bernard Joyce
      * @param cat the cat to create
      * @return the generated identifier of the created cat
      * @throws Exception if the operation fails
@@ -47,7 +45,6 @@ public class CatService implements Service {
 
     /**
      * Retrieves a {@link Cat} by its unique identifier.
-     * @author Bernard Joyce
      * @param id the cat ID
      * @return an {@link Optional} containing the cat if found
      * @throws Exception if the retrieval fails
@@ -58,7 +55,6 @@ public class CatService implements Service {
 
     /**
      * Retrieves all cats.
-     * @author Bernard Joyce
      * @return a list of all cats
      * @throws Exception if the retrieval fails
      */
@@ -68,7 +64,6 @@ public class CatService implements Service {
 
     /**
      * Updates an existing cat.
-     * @author Bernard Joyce
      * @param id the ID of the cat to update
      * @param cat the updated cat data
      * @return the updated {@link Cat}
@@ -80,7 +75,6 @@ public class CatService implements Service {
 
     /**
      * Deletes a cat by its unique identifier.
-     * @author Bernard Joyce
      * @param id the cat ID
      * @throws Exception if the deletion fails
      */
@@ -94,7 +88,6 @@ public class CatService implements Service {
 
     /**
      * Filters cats by gender.
-     * @author Bernard Joyce
      * @param gender the {@link Gender} to filter by
      * @return a list of cats matching the given gender
      * @throws Exception if the operation fails
@@ -106,7 +99,6 @@ public class CatService implements Service {
 
     /**
      * Converts a {@link Cat} object to its JSON representation.
-     * @author Bernard Joyce
      * @param cat the cat to serialize
      * @return a JSON string representation
      * @throws JsonProcessingException if serialization fails
@@ -117,7 +109,6 @@ public class CatService implements Service {
 
     /**
      * Converts a JSON string into a {@link Cat} object.
-     * @author Bernard Joyce
      * @param json the JSON string
      * @return the deserialized cat
      * @throws JsonProcessingException if deserialization fails
@@ -128,7 +119,6 @@ public class CatService implements Service {
 
     /**
      * Converts a list of {@link Cat} objects to JSON.
-     * @author Bernard Joyce
      * @param catList the list of cats
      * @return a JSON string representation
      * @throws JsonProcessingException if serialization fails
@@ -139,7 +129,6 @@ public class CatService implements Service {
 
     /**
      * Converts a JSON string into a list of {@link Cat} objects.
-     * @author Bernard Joyce
      * @param json the JSON string
      * @return a list of deserialized cats
      * @throws JsonProcessingException if deserialization fails

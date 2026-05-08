@@ -21,7 +21,6 @@ private String dietaryRestrictions;
 
     /**
      * Creates a new Nutrition with the given attributes.
-     * @author Jack Cleary
      * @param id                        the nutrition's unique ID (must be >= 0)
      * @param dailyCaloriesKcal         daily amount of calories (required
      * @param proteinGrams              grams of protein (required)

@@ -19,6 +19,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Unit tests for {@link JdbcNutritionDao}.
+ * @author Jack Cleary
+ */
 public class JdbcNutritionDaoTest {
 
     private static final String URL  = "jdbc:mysql://localhost:8889/catnowner_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";

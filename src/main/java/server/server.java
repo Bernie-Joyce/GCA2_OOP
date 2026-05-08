@@ -35,7 +35,6 @@ public class server {
 
     /**
      * Creates a new server instance bound to the specified port.
-     * @author Bernard Joyce
      * @param port the TCP port to listen on (must be between 1024 and 65535)
      * @throws IllegalArgumentException if the port is outside the valid range
      */
@@ -51,8 +50,6 @@ public class server {
      *
      * <p>Each accepted client is delegated to a separate thread managed by
      * a cached thread pool.</p>
-     * @author Bernard Joyce
-     * @author Jack Cleary
      * @throws IOException if the server socket fails to open or accept connections
      */
     public void start() throws IOException {
@@ -73,7 +70,6 @@ public class server {
     /**
      * Shuts down the server's thread pool, waiting for active tasks
      * to complete before forcing termination if necessary.
-     * @author Bernard Joyce
      */
     private void shutdown() {
         System.out.println("Shutting down thread pool...");
@@ -96,8 +92,6 @@ public class server {
      * <p>This runnable reads JSON requests from the socket input stream,
      * processes them through the {@link RequestRouter}, and sends back
      * JSON responses to the client.</p>
-     * @author Bernard Joyce
-     * @author Jack Cleary
      */
     private static class ClientHandler implements Runnable {
 
@@ -160,7 +154,6 @@ public class server {
 
     /**
      * Application entry point that starts the server on port 9000.
-     * @author Bernard Joyce
      * @throws IOException if the server fails to start or bind to the port
      */
      static void main() throws IOException {

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/** Unit tests for {@link Request}.
+ * @author Michal Salabura
+ */
 public class RequestTest {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();

@@ -26,7 +26,6 @@ public class JdbcCatDao implements CatDao {
 
     /**
      * Creates a new JdbcCatDao with the given database credentials.
-     * @author Bernard Joyce
      * @param url  the JDBC connection URL
      * @param user the database username
      * @param pass the database password

@@ -25,7 +25,6 @@ public class JdbcNutritionDao implements NutritionDao {
 
     /**
      * Creates a new jdbcNutritionDao with the given database credentials.
-     * @author Jack Cleary
      * @param url  the JDBC connection URL
      * @param user the database username
      * @param pass the database password

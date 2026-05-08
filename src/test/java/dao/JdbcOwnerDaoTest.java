@@ -13,6 +13,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Unit tests for {@link JdbcOwnerDao}.
+ * @author Michal Salabura
+ */
 public class JdbcOwnerDaoTest {
 
     private static final String URL = "jdbc:mysql://localhost:3306/catnowner_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";

@@ -4,6 +4,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import server.ErrorType;
 
+/** Unit tests for {@link Response}.
+ * @author Michal Salabura
+ */
 public class ResponseTest {
 
     @Test

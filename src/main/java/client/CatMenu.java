@@ -29,7 +29,6 @@ public class CatMenu {
 
     /**
      * Creates a CatMenu with the given client.
-     * @author Bernard Joyce
      * @param client the connected client used to send requests
      */
     CatMenu(Client client) {
@@ -156,7 +155,6 @@ public class CatMenu {
     /**
      * Prompts the user for all cat fields, including an optional image file,
      * and builds a {@link Cat} using the Builder.
-     * @author Bernard Joyce
      * @param id the cat's ID (0 for new cats)
      * @return a fully constructed {@link Cat}
      */
@@ -224,7 +222,6 @@ public class CatMenu {
 
     /**
      * Prompts the user to choose a gender, looping until a valid choice is made.
-     * @author Bernard Joyce
      * @return the selected {@link Gender}
      */
     private Gender findGender() {
@@ -239,7 +236,6 @@ public class CatMenu {
 
     /**
      * Prompts the user for a date in dd/MM/yyyy format, looping until a valid date is entered.
-     * @author Bernard Joyce
      * @return the parsed {@link Date}
      */
     private Date findDate() {

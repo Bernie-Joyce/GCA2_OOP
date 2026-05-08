@@ -3,7 +3,6 @@ package client;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import domain.Cat;
 import domain.FileUploadPayload;
 import domain.Owner;
 import protocol.RequestType;
@@ -27,7 +26,6 @@ public class OwnerMenu {
 
     /**
      * Creates a OwnerMenu with the given client.
-     * @author Michal Salabura
      * @param client the connected client used to send requests
      */
     OwnerMenu(Client client) {
@@ -163,7 +161,6 @@ public class OwnerMenu {
     /**
      * Prompts the user for all owner fields, excluding image file,
      * and builds an {@link Owner}.
-     * @author Michal Salabura
      * @param id the owner's ID (0 for new owner)
      * @return a constructed {@link Owner}
      */
@@ -214,7 +211,6 @@ public class OwnerMenu {
     /**
      * Reads the file at the given path and constructs a {@link FileUploadPayload}
      * containing the file's Base64-encoded content and metadata.
-     * @author Michal Salabura
      * @param filePath the {@link Path} to the image file to be uploaded
      * @param id       the ID of the owner to associate the image with
      * @return a {@link FileUploadPayload} containing the encoded file data and its metadata
@@ -236,7 +232,6 @@ public class OwnerMenu {
      * Base64 image data from the response. The file is saved using the
      * original filename returned by the server. Prints the saved file's
      * path on success, or an error message on failure.
-     * @author Michal Salabura
      */
     public void handleDownloadImage() {
         try {
@@ -272,7 +267,6 @@ public class OwnerMenu {
      * Sends a {@link RequestType#GET_OWNER_METADATA} request and prints
      * the response payload as a formatted JSON string. Prints an error
      * message if the request fails.
-     * @author Michal Salabura
      */
     public void handleGetMetadata() {
         try {

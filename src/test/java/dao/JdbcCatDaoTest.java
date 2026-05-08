@@ -14,6 +14,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Unit tests for {@link JdbcCatDao}.
+ * @author Bernard Joyce
+ */
 public class JdbcCatDaoTest {
 
     private static final String URL = "jdbc:mysql://localhost:8889/catnowner_test?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";

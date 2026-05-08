@@ -21,7 +21,6 @@ public class JdbcOwnerDao implements OwnerDao {
 
     /**
      * Creates a new jdbcOwnerDao with the given database credentials.
-     * @author Michal Salabura
      * @param url  the JDBC connection URL
      * @param user the database username
      * @param pass the database password

@@ -5,6 +5,9 @@ import domain.Nutrition;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Unit tests for Nutrition Json.
+ * @author Jack Cleary
+ */
 public class NutritionJsonTest {
 
     private final ObjectMapper _mapper = new ObjectMapper();

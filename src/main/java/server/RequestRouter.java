@@ -283,8 +283,6 @@ public class RequestRouter {
      *
      * <p>The request type is extracted, matched against the registered handlers,
      * and executed. If no handler exists, an error response is returned.</p>
-     * @author Bernard Joyce
-     * @author Jack Cleary
      * @param request the incoming client request
      * @return the {@link Response} produced by the corresponding handler
      */
@@ -313,8 +311,6 @@ public class RequestRouter {
 
     /**
      * Validates a {@link Cat} object and returns an error message if invalid.
-     * @author Bernard Joyce
-     * @author Jack Cleary
      * @param cat the cat to validate
      * @return a validation error message, or {@code null} if valid
      */

@@ -19,7 +19,6 @@ package server;
  *   <li>{@link #SUCCESS} - Indicates the request was processed successfully (200)</li>
  *   <li>{@link #UNSUPPORTED_OPERATION} - Indicates the operation is not supported (501)</li>
  * </ul>
- * @author Bernard Joyce
  */
 public enum ErrorType {
     /**
@@ -28,7 +27,6 @@ public enum ErrorType {
      * <p>HTTP Status: 404 Not Found</p>
      *
      * <p>Use this error when a client requests a resource that does not exist or has been deleted.</p>
-     * @author Bernard Joyce
      */
     RESOURCE_NOT_FOUND("NOT_FOUND", 404),
 
@@ -38,7 +36,6 @@ public enum ErrorType {
      * <p>HTTP Status: 400 Bad Request</p>
      *
      * <p>Use this error when the request format is incorrect or does not conform to expected structure.</p>
-     * @author Bernard Joyce
      */
     INVALID_REQUEST("INVALID_REQUEST", 400),
 
@@ -49,7 +46,6 @@ public enum ErrorType {
      *
      * <p>Use this error when the request passes syntax validation but fails semantic or business logic validation.
      * For example, invalid field values or constraints not met.</p>
-     * @author Bernard Joyce
      */
     VALIDATION_ERROR("VALIDATION_ERROR", 400),
 
@@ -59,7 +55,6 @@ public enum ErrorType {
      * <p>HTTP Status: 500 Internal Server Error</p>
      *
      * <p>Use this error for uncaught exceptions, database failures, or other unexpected server-side issues.</p>
-     * @author Bernard Joyce
      */
     INTERNAL_ERROR("INTERNAL_ERROR", 500),
 
@@ -69,7 +64,6 @@ public enum ErrorType {
      * <p>HTTP Status: 401 Unauthorized</p>
      *
      * <p>Use this error when authentication is required but not provided, invalid, or expired.</p>
-     * @author Bernard Joyce
      */
     UNAUTHORIZED("UNAUTHORIZED", 401),
 
@@ -80,7 +74,6 @@ public enum ErrorType {
      *
      * <p>Use this error when the user is authenticated but their authorization level is insufficient
      * to perform the requested action.</p>
-     * @author Bernard Joyce
      */
     FORBIDDEN("FORBIDDEN", 403),
 
@@ -91,7 +84,6 @@ public enum ErrorType {
      *
      * <p>Use this error when a request conflicts with the existing state, such as attempting to create
      * a duplicate resource or modifying a resource in an incompatible state.</p>
-     * @author Bernard Joyce
      */
     CONFLICT("CONFLICT", 409),
 
@@ -111,7 +103,6 @@ public enum ErrorType {
      *
      * <p>Use this error when a request targets a feature or endpoint that is not yet implemented
      * or is explicitly not supported.</p>
-     * @author Bernard Joyce
      */
     UNSUPPORTED_OPERATION("UNSUPPORTED_OPERATION", 501);
 
@@ -121,7 +112,6 @@ public enum ErrorType {
 
     /**
      * Constructs an ErrorType with the specified code and HTTP status.
-     * @author Bernard Joyce
      * @param code the error code string used in error responses
      * @param httpStatus the corresponding HTTP status code
      */
@@ -134,7 +124,6 @@ public enum ErrorType {
      * Returns the error code string associated with this error type.
      *
      * <p>The code is a machine-readable identifier suitable for client-side error handling logic.</p>
-     * @author Bernard Joyce
      * @return the error code string
      */
     public String getCode() {
@@ -145,7 +134,6 @@ public enum ErrorType {
      * Returns the HTTP status code associated with this error type.
      *
      * <p>This code should be used in the HTTP response status line when returning this error.</p>
-     * @author Bernard Joyce
      * @return the HTTP status code (e.g., 404, 400, 500)
      */
     public int getHttpStatus() {

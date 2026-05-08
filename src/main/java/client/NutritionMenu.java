@@ -27,7 +27,6 @@ public class NutritionMenu {
 
     /**
      * Creates a NutritionMenu with the given client.
-     * @author Jack Cleary
      * @param client the connected client used to send requests
      */
     NutritionMenu(Client client) {
@@ -61,7 +60,7 @@ public class NutritionMenu {
         }
     }
 
-
+    /** Retrieves and prints all nutritions from the server. */
     public void handleGetAll() {
         try {
             Response<JsonNode> res = client.send(RequestType.GET_ALL_NUTRITION, null);
@@ -71,6 +70,9 @@ public class NutritionMenu {
         }
     }
 
+    /**
+     * Retrieves a nutrition by ID.
+     */
     public void handleGetById() {
         try {
             System.out.println("Cat ID: ");
@@ -83,6 +85,7 @@ public class NutritionMenu {
         }
     }
 
+    /** Prompts for nutrition details and sends a create request to the server. */
     public void handleAdd(){
         try {
             Nutrition newNutrition = getNutritionDetails(0);
@@ -93,6 +96,7 @@ public class NutritionMenu {
         }
     }
 
+    /** Prompts for an ID and updated owner details, then sends an update request. */
     public void handleUpdate(){
         try {
             System.out.println("Enter ID to Update: ");
@@ -111,6 +115,8 @@ public class NutritionMenu {
 
         }
     }
+
+    /** Prompts for an ID and sends a delete request to the server. */
     public void handleDelete(){
         try{
             System.out.println("Enter ID to delete: ");
@@ -123,6 +129,11 @@ public class NutritionMenu {
         }
     }
 
+    /**
+     * Prompts the user for a meals-per-day value and sends a filter request
+     * to retrieve nutrition records matching that value.
+     * Prints an error message if the request fails.
+     */
     public void handleFilter(){
         System.out.println("Meals per day to Filter By:");
         int meals = scanner.nextInt();
@@ -133,7 +144,12 @@ public class NutritionMenu {
         }
     }
 
-
+    /**
+     * Prompts the user for all nutrition fields,
+     * and builds an {@link Nutrition}.
+     * @param id the owner's ID (0 for new nutrition)
+     * @return a constructed {@link Nutrition}
+     */
     private Nutrition getNutritionDetails(int id){
         System.out.println("Daily Calories: ");
         int kcals = scanner.nextInt();
